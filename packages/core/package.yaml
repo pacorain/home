@@ -1,0 +1,8 @@
+tts:
+  - platform: google_translate
+
+group: !include ui_groups.yaml
+automation: !include ui_automations.yaml
+script: !include ui_scripts.yaml
+scene: !include ui_scenes.yaml
+

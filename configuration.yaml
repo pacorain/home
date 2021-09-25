@@ -1,0 +1,2 @@
+homeassistant: 
+  packages: !include packages/index.yaml

@@ -1,0 +1,3 @@
+# Connects all of my packages to my Home Assistant config
+
+core: !include core/package.yaml
