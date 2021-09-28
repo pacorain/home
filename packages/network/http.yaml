@@ -1,0 +1,7 @@
+# Allow Docker containers to serve as proxies
+use_x_forwarded_for: true
+trusted_proxies: 
+  - 172.30.33.0/24
+
+# Disable banning while testing
+ip_ban_enabled: false
