@@ -1,4 +1,36 @@
-default_config:
+# Override default_config
+# See https://www.home-assistant.io/integrations/default_config/
+
+
+config:
+counter:
+dhcp:
+# Energy disabled because we don't have any energy sensors at this time
+# energy:
+frontend:
+history:
+input_boolean:
+input_datetime:
+input_number:
+input_select:
+input_text:
+logbook:
+map:
+media_source:
+mobile_app:
+my:
+person:
+ssdp:
+stream:
+sun:
+system_health:
+tag:
+timer:
+updater:
+usb:
+webhook:
+zeroconf:
+zone:
 
 tts:
   - platform: google_translate
@@ -7,4 +39,6 @@ group: !include ui_groups.yaml
 automation: !include ui_automations.yaml
 script: !include ui_scripts.yaml
 scene: !include ui_scenes.yaml
+homeassistant:
+  customize: !include ui_customize.yaml
 

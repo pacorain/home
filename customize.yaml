@@ -1,0 +1,5 @@
+climate.heat:
+  hvac_modes:
+    - heat
+    - 'off'
+  supported_features: 1

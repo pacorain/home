@@ -1,0 +1,3 @@
+# All of my climate automations
+
+automation: !include_dir_list automations

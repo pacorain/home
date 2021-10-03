@@ -1,4 +1,5 @@
 # Connects all of my packages to my Home Assistant config
 
+climate: !include climate/package.yaml
 core: !include core/package.yaml
 network: !include network/package.yaml
