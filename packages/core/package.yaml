@@ -20,6 +20,7 @@ media_source:
 mobile_app:
 my:
 person:
+recorder: !include recorder.yaml
 ssdp:
 stream:
 sun:

@@ -1,0 +1,7 @@
+# My recorder configuration
+
+db_url: !secret recorder_db_url
+
+# Until I can find a better way to archive data, let's go ahead and keep stuff
+# for a year
+purge_keep_days: 360
