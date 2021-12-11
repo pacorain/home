@@ -9,3 +9,4 @@ scenes.yaml
 scripts.yaml
 
 !packages
+!custom_components
