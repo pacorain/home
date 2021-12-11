@@ -1,0 +1,22 @@
+{
+    "config": {
+      "step": {
+        "user": {
+          "title": "Starlink Address",
+          "description": "Starlink expects you connect at 192.168.100.1:9200. However, you can change this option if you have a proxy set up.",
+          "data": {
+            "address": "[%key:common::config_flow::data::host%]",
+            "update_interval": "Update interval (seconds)"
+          }
+        }
+      },
+      "error": {
+        "cannot_connect": "Could not connect to Starlink. Please make sure you are using the Starlink router, or have a static route to 192.168.100.1.",
+        "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
+        "unknown": "[%key:common::config_flow::error::unknown%]"
+      },
+      "abort": {
+        "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+      }
+    }
+  }
