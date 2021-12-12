@@ -1,0 +1,7 @@
+# Logger configuration
+#
+# See https://www.home-assistant.io/integrations/logger/
+
+default: info
+logs:
+  custom_components.starlink: debug

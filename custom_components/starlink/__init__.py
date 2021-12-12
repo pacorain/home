@@ -75,6 +75,7 @@ class BaseStarlinkEntity(CoordinatorEntity, ABC):
             "manufacturer": "SpaceX",
             "sw_version": self.dish.software_version,
             "hw_version": self.dish.hardware_version,
+            "configuration_url": "http://" + self.dish.address.split(":")[0] + ":80"
         }
 
     @property

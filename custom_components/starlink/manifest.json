@@ -2,6 +2,7 @@
   "domain": "starlink",
   "name": "Starlink",
   "config_flow": true,
+  "version": "0.0.3",
   "documentation": "https://www.home-assistant.io/integrations/starlink",
   "requirements": [
     "starlink-python==0.0.3"

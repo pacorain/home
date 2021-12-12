@@ -20,7 +20,7 @@ _LOGGER = logging.getLogger(__name__)
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
         vol.Required("address", default="192.168.100.1:9200"): str,
-        vol.Optional("update_interval", default=5): int,
+        vol.Optional("update_interval", default=5): float
     }
 )
 

@@ -4,8 +4,10 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.components.binary_sensor import (
     BinarySensorEntity,
     DEVICE_CLASS_PROBLEM,
-    DEVICE_CLASS_CONNECTIVITY,
+    DEVICE_CLASS_CONNECTIVITY
 )
+
+from homeassistant.const import ENTITY_CATEGORY_DIAGNOSTIC
 
 from .const import DOMAIN
 from . import BaseStarlinkEntity
@@ -66,12 +68,16 @@ class ConnectedEntity(StarlinkBinaryEntity):
 
 
 class ObstructedEntity(StarlinkBinaryEntity):
-    base_name = "Starlink Obstructed"
+    base_name = "Obstruction"
     device_class = DEVICE_CLASS_PROBLEM
 
     @property
     def unique_id(self):
         return f"{self.dish.id}.obstructed"
+
+    @property
+    def entity_category(self):
+        return ENTITY_CATEGORY_DIAGNOSTIC
 
     @property
     def is_on(self):
