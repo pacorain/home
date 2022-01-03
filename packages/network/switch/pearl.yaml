@@ -1,0 +1,19 @@
+# My gaming computer, which is currently set up on a server rack for me to game over the 
+# network. It also hosts some more CPU-intensive services when I need them.
+#
+# I don't remember why I named my gaming computer PEARL...
+
+platform: wake_on_lan
+
+name: PEARL power
+
+# No reason to expose my network info to the public
+mac: !secret network_mac_pearl
+host: !secret network_host_pearl
+
+# Use IoTLink to shut down my computer
+turn_off: 
+  service: mqtt.publish
+  data:
+    topic: "iotlink/workgroup/pearl/commands/shutdown"
+    payload: ""
