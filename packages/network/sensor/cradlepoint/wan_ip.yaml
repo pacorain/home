@@ -1,0 +1,14 @@
+# The WAN IP address assigned over DHCP on the Ethernet port (which is currently plugged in to my)
+# Starlink sattelite.
+
+name: Starlink IP
+
+platform: rest
+
+resource: http://192.168.0.1/api/status/dhcp/ethernet-wan/ipinfo/ip_address
+username: !secret network_cradlepoint_username
+password: !secret network_cradlepoint_password
+authentication: basic
+
+value_template: |-
+  {{ value_json.data }}

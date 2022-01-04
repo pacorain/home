@@ -6,3 +6,4 @@ wake_on_lan:
 
 # Load various entity configurations
 switch: !include_dir_list switch
+sensor: !include_dir_list sensor
