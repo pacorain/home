@@ -2,6 +2,14 @@ esphome:
     name: laundry-drain-control-v2
     platform: esp8266
     board: d1_mini_lite
+    on_boot:
+    priority: 600
+    then:
+      - if:
+            condition:
+              binary_sensor.is_off: drain_backup
+            then:
+              - switch.turn_on: drain
 
 logger:
 
