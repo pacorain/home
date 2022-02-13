@@ -11,3 +11,5 @@ scripts.yaml
 !packages
 !custom_components
 !README.md
+
+!esphome

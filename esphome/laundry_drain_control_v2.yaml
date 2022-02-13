@@ -1,0 +1,27 @@
+esphome:
+    name: laundry-drain-control-v2
+    platform: esp8266
+    board: d1_mini_lite
+
+logger:
+
+# Enable Home Assistant API
+api:
+  password: ""
+
+ota:
+  password: ""
+
+wifi:
+  ssid: !secret esphome_ssid
+  password: !secret esphome_sk
+
+switch:
+  - platform: gpio
+    restore_mode: ALWAYS_OFF
+    pin: 
+      number: D4
+      mode: OUTPUT_OPEN_DRAIN
+      inverted: true
+    name: "Drain Relay"
+    id: drain
