@@ -1,15 +1,16 @@
 esphome:
   name: laundry-drain-control-v2
-  platform: esp8266
-  board: d1_mini_lite
   on_boot:
     priority: 600
     then:
       - if:
             condition:
-              binary_sensor.is_off: drain_backup
+              binary_sensor.is_off: water_sensor
             then:
               - switch.turn_on: drain
+
+esp8266:
+  board: d1_mini_lite
 
 logger:
 
@@ -39,7 +40,7 @@ binary_sensor:
     name: "Drain backed up"
     id: water_sensor
     pin:
-      number: D3
+      number: D0
       mode: INPUT_PULLDOWN
     filters:
       - delayed_on: 100ms
@@ -52,7 +53,7 @@ binary_sensor:
   - platform: template
     name: "Drain should stop"
     lambda: |-
-      return id(water_sensor).state
+      return id(water_sensor).state;
     filters:
       - delayed_off: 150s
     internal: true
@@ -63,6 +64,5 @@ binary_sensor:
               binary_sensor.is_off: water_sensor
             then:
               - switch.turn_on: drain
-
     
 
