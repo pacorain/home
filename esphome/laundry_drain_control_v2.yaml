@@ -33,3 +33,36 @@ switch:
       inverted: true
     name: "Drain Relay"
     id: drain
+
+binary_sensor:
+  - platform: gpio
+    name: "Drain backed up"
+    id: water_sensor
+    pin:
+      number: D3
+      mode: INPUT_PULLDOWN
+    filters:
+      - delayed_on: 100ms
+      - delayed_off: 250ms
+    on_press:
+      then:
+        - switch.turn_off: drain
+    
+
+  - platform: template
+    name: "Drain should stop"
+    lambda: |-
+      return id(water_sensor).state
+    filters:
+      - delayed_off: 150s
+    internal: true
+    on_release:
+      then:
+        - if: 
+            condition:
+              binary_sensor.is_off: water_sensor
+            then:
+              - switch.turn_on: drain
+
+    
+
