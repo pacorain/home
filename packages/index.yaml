@@ -2,4 +2,5 @@
 
 climate: !include climate/package.yaml
 core: !include core/package.yaml
+influxdb: !include influxdb/package.yaml
 network: !include network/package.yaml

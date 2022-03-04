@@ -1,0 +1,68 @@
+# Our home does not have central cooling, so I want to make sure the heat from outside combined with warming our house
+# earlier in the day does not make the house too warm.
+
+description: Turn down the heat before warmer days
+trigger:
+  - id: 'sun_going_down'
+    platform: numeric_state
+    entity_id: sun.sun
+    value_template: "{{ state.attributes.elevation }}"
+    below: 25
+
+  - id: 'house_warming_up'
+    platform: state
+    entity_id: sensor.heat_air_temperature
+
+condition:
+  - alias: "House will get too warm"
+    condition: template
+    # To check if it will get too hot, we follow these steps:
+    #   1. Take every hourly forecast above 74ºF, and subtract 74
+    #   2. Sum up the result
+    #   3. Divide by 4
+    #   4. Add the current thermostat temperature.
+    #
+    # If the result is more than 76, we take subtract the result from step 3 from 74 to get the 
+    # target temperature.
+    value_template: |-
+      {{
+        0.25 * (
+          state_attr('weather.home_hourly', 'forecast')
+            | map (attribute='temperature')
+            | map ('max', 74)
+            | sum
+          - (state_attr('weather.home_hourly', 'forecast')
+            | count) 
+          * 74
+        ) + state_attr('climate.heat', 'temperature') > 76
+      }}
+
+action:
+  #- variables:
+  #    target_temp: |-
+  #      {{
+  #        74 - 0.25 * (
+  #          state_attr('weather.home_hourly', 'forecast')
+  #            | map (attribute='temperature')
+  #            | map ('max', 74)
+  #            | sum
+  #          - (state_attr('weather.home_hourly', 'forecast')
+  #            | count) 
+  #          * 74
+  #        )) | max(62)
+  #      }}
+
+  - alias: Notify of temperature change
+    service: notify.notify
+    data:
+      title: Turning down the heat
+      message: |-
+        It's going to get warm in the next 12 hours. I've turned the heat down to {{ target_temp }}º.
+
+  - alias: Change the temperature
+    service: climate.set_temperature
+    target:
+      entity_id: climate.heat
+    data_template:
+      temperature: "{{ target_temp }}"
+  

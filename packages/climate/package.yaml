@@ -1,3 +1,5 @@
 # All of my climate automations
 
 automation: !include_dir_list automations
+climate: !include_dir_list entities
+input_boolean: !include helpers/boolean.yaml

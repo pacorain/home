@@ -1,0 +1,25 @@
+id: office_morning_heat
+alias: "Het up the office in the morning"
+trigger:
+  - platform: time
+    at: "05:00:00"
+condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - condition: state
+    entity_id: input_boolean.office_climate_schedule
+    state: "on"
+
+action:
+  - alias: "Turn on the heat"
+    service: climate.set_temperature
+    target:
+      entity_id: climate.office_thermostat
+    data:
+      hvac_mode: heat
+      temperature: 60
