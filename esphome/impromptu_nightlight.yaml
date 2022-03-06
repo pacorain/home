@@ -1,0 +1,52 @@
+esphome:
+  name: impromptu-nightlight
+  platform: ESP8266
+  board: nodemcuv2
+
+logger:
+
+# Enable Home Assistant API
+api:
+  password: ""
+
+ota:
+  password: ""
+
+wifi:
+  ssid: "Bill Wi the Science Fi"
+  password: "ajdrdr22"
+
+light:
+  - platform: fastled_clockless
+    rgb_order: RGB
+    pin: GPIO3
+    chipset: WS2811
+    num_leds: 50
+    name: "Impromptu Nightlight"
+    gamma_correct: 1
+    effects:
+      - addressable_twinkle:
+          name: Glittery
+          twinkle_probability: 75%
+          progress_interval: 4ms
+      - addressable_random_twinkle:
+          name: Glittery Rainbow
+          twinkle_probability: 61%
+          progress_interval: 50ms
+      - addressable_random_twinkle:
+          name: "Portal to Hell"
+          twinkle_probability: 72%
+          progress_interval: 3ms
+      - addressable_rainbow:
+          name: Rainbow 🌈
+          speed: 10
+          width: 150
+      - addressable_rainbow:
+          name: Super Rainbow
+          speed: 10
+          width: 50
+      - addressable_flicker:
+          name: Campfire
+          update_interval: 30ms
+          intensity: 75%
+          

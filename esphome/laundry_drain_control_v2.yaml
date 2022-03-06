@@ -43,8 +43,8 @@ binary_sensor:
       number: D0
       mode: INPUT_PULLDOWN
     filters:
-      - delayed_on: 100ms
-      - delayed_off: 250ms
+      - delayed_on: 250ms
+      - delayed_off: 5s
     on_press:
       then:
         - switch.turn_off: drain
@@ -55,7 +55,7 @@ binary_sensor:
     lambda: |-
       return id(water_sensor).state;
     filters:
-      - delayed_off: 150s
+      - delayed_off: 600s
     internal: true
     on_release:
       then:
