@@ -1,0 +1,6 @@
+<<: !include hardware/sonoff_s31.yaml
+
+substitutions: 
+  device_name: washing-machine
+  friendly_name: Washing machine
+  watt_limit: "1800"

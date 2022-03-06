@@ -1,0 +1,86 @@
+substitutions: 
+  device_name: sonoff_s31
+  friendly_name: friendly_name
+  watt_limit: "1800"
+
+esphome:
+  name: $device_name
+
+esp8266:
+  board: esp01_1m
+
+wifi:
+  ssid: !secret esphome_ssid
+  password: !secret esphome_sk
+
+logger:
+  baud_rate: 0 # (UART logging interferes with cse7766)
+
+api:
+
+ota:
+
+# Device Specific Config
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    internal: True
+    id: button
+    on_press:
+      - switch.toggle: relay
+  - platform: status
+    name: "Status"
+
+sensor:
+  - platform: wifi_signal
+    name: "$friendly_name Wifi Signal"
+    update_interval: 15s
+  - platform: cse7766
+    current:
+      name: "$friendly_name Current"
+      accuracy_decimals: 1
+    voltage:
+      name: "$friendly_name Voltage"
+      accuracy_decimals: 1
+    power:
+      name: "$friendly_name Power"
+      accuracy_decimals: 1
+      id: power
+      on_value_range:
+        above: $watt_limit
+        then: 
+          - switch.turn_off: relay
+          - homeassistant.event: 
+              event: esphome.breaker_tripped
+    update_interval: 5s
+  - platform: integration
+    name: "$friendly_name Energy"
+    sensor: power
+    time_unit: h
+    unit_of_measurement: kWh
+    filters:
+      - multiply: 0.001
+
+time:
+  - platform: sntp
+    id: the_time
+
+switch:
+  - platform: gpio
+    name: "$friendly_name Heater"
+    pin: GPIO12
+    id: relay
+    restore_mode: ALWAYS_ON
+
+status_led:
+  pin: 
+    number: GPIO13
+    inverted: True
