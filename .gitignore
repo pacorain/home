@@ -13,3 +13,7 @@ scripts.yaml
 !README.md
 
 !esphome
+
+# Setup files
+!*file
+!.vscode/
