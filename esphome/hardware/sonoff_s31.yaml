@@ -1,7 +1,4 @@
-substitutions: 
-  device_name: sonoff_s31
-  friendly_name: friendly_name
-  watt_limit: "1800"
+## Generic start for Sonoff S31 devices
 
 esphome:
   name: $device_name
@@ -38,6 +35,20 @@ binary_sensor:
       - switch.toggle: relay
   - platform: status
     name: "Status"
+  - platform: template
+    name: "$friendly_name Breaker Tripped"
+    id: breaker
+    device_class: safety
+    on_press:
+      then:
+        - switch.turn_off: relay
+        - light.turn_on: 
+            id: led
+            effect: Breaker Tripped
+    on_release:
+      then:
+        - light.turn_off: led
+
 
 sensor:
   - platform: wifi_signal
@@ -57,9 +68,9 @@ sensor:
       on_value_range:
         above: $watt_limit
         then: 
-          - switch.turn_off: relay
-          - homeassistant.event: 
-              event: esphome.breaker_tripped
+          - binary_sensor.template.publish: 
+              id: breaker
+              state: ON
     update_interval: 5s
   - platform: integration
     name: "$friendly_name Energy"
@@ -75,12 +86,31 @@ time:
 
 switch:
   - platform: gpio
-    name: "$friendly_name Heater"
+    name: "$friendly_name Power"
     pin: GPIO12
     id: relay
     restore_mode: ALWAYS_ON
+    on_turn_on:
+      then:
+        - binary_sensor.template.publish:
+            id: breaker
+            state: OFF
 
-status_led:
-  pin: 
-    number: GPIO13
-    inverted: True
+light:
+  - platform: status_led
+    pin: 
+      number: GPIO13
+      inverted: True
+    id: led
+    internal: True
+    effects:
+      - lambda: 
+          name: "Breaker Tripped"
+          update_interval: 250ms
+          lambda: |-
+            static int state = 0;
+            auto call = id(led).turn_on();
+            call.set_brightness(state == 1);
+            call.perform();
+            state = (state + 1) % 2;
+    restore_mode: ALWAYS_OFF
