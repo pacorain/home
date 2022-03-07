@@ -38,7 +38,7 @@ binary_sensor:
   - platform: template
     name: "$friendly_name Breaker Tripped"
     id: breaker
-    device_class: safety
+    device_class: problem
     on_press:
       then:
         - switch.turn_off: relay
