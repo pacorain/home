@@ -4,10 +4,20 @@ esphome:
     priority: 600
     then:
       - if:
-            condition:
-              binary_sensor.is_off: water_sensor
-            then:
-              - switch.turn_on: drain
+          condition:
+            binary_sensor.is_off: water_sensor
+          then:
+            - switch.turn_on: drain
+
+globals:
+  - id: relay_turned_off_at
+    type: int
+    restore_value: no
+    initial_value: "0"
+  - id: relay_turned_on_at
+    type: int
+    restore_value: no
+    initial_value: "0"
 
 esp8266:
   board: d1_mini_lite
@@ -25,6 +35,10 @@ wifi:
   ssid: !secret esphome_ssid
   password: !secret esphome_sk
 
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
 switch:
   - platform: gpio
     restore_mode: ALWAYS_OFF
@@ -34,6 +48,14 @@ switch:
       inverted: true
     name: "Drain Relay"
     id: drain
+    on_turn_on:
+      then:
+        lambda: |-
+          id(relay_turned_on_at) = id(homeassistant_time).utcnow().timestamp;
+    on_turn_off:
+      then:
+        lambda: |-
+          id(relay_turned_off_at) = id(homeassistant_time).utcnow().timestamp;
 
 binary_sensor:
   - platform: gpio
@@ -48,6 +70,14 @@ binary_sensor:
     on_press:
       then:
         - switch.turn_off: drain
+        - lambda: |-
+            if (id(relay_turned_off_at) == 0 || id(relay_turned_on_at) == 0) return;
+            int water_detected_at = id(homeassistant_time).utcnow().timestamp;
+            int time_off = id(relay_turned_on_at) - id(relay_turned_off_at);
+            int time_on = water_detected_at - id(relay_turned_on_at);
+            if (time_on > 1800) return;
+            id(cycle_off_time).publish_state(time_off);
+            id(cycle_on_time).publish_state(time_on);
     
 
   - platform: template
@@ -65,4 +95,12 @@ binary_sensor:
             then:
               - switch.turn_on: drain
     
-
+sensor:
+  - platform: template
+    name: "Last cycle off time"
+    id: cycle_off_time
+    unit_of_measurement: s
+  - platform: template
+    name: "Last cycle on time"
+    id: cycle_on_time
+    unit_of_measurement: s
