@@ -55,6 +55,13 @@ switch:
     on_turn_off:
       then:
         lambda: |-
+          int water_detected_at = id(homeassistant_time).utcnow().timestamp;
+          int time_off = id(relay_turned_on_at) - id(relay_turned_off_at);
+          int time_on = water_detected_at - id(relay_turned_on_at);
+          if (id(water_sensor).state && id(relay_turned_off_at) > 0 && id(relay_turned_on_at) > 0 && time_on < 1600) {
+            id(cycle_off_time).publish_state(time_off);
+            id(cycle_on_time).publish_state(time_on);
+          }
           id(relay_turned_off_at) = id(homeassistant_time).utcnow().timestamp;
 
 binary_sensor:
@@ -70,14 +77,6 @@ binary_sensor:
     on_press:
       then:
         - switch.turn_off: drain
-        - lambda: |-
-            if (id(relay_turned_off_at) == 0 || id(relay_turned_on_at) == 0) return;
-            int water_detected_at = id(homeassistant_time).utcnow().timestamp;
-            int time_off = id(relay_turned_on_at) - id(relay_turned_off_at);
-            int time_on = water_detected_at - id(relay_turned_on_at);
-            if (time_on > 1800) return;
-            id(cycle_off_time).publish_state(time_off);
-            id(cycle_on_time).publish_state(time_on);
     
 
   - platform: template
