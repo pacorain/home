@@ -2,7 +2,7 @@ pipeline {
     agent {label 'local'}
 
     stages { 
-        stage('Test') {
+        stage('Test HASS config') {
             steps {
                 sh 'cp fake_secrets.yaml secrets.yaml'
                 sh 'touch groups.yaml automations.yaml scenes.yaml scripts.yaml'
@@ -10,7 +10,7 @@ pipeline {
             }
           }
       
-        stage('Deploy') {
+        stage('Deploy HASS config') {
             when {
               branch 'main'
             }
@@ -19,7 +19,9 @@ pipeline {
                   string(credentialsId: 'homeAssistantHost', variable: 'HOME_ASSISTANT_HOST'), 
                   sshUserPrivateKey(credentialsId: 'homeAssistantDeploy', usernameVariable: 'HOME_ASSISTANT_USERNAME', keyFileVariable: 'HOME_ASSISTANT_DEPLOY_KEY')
                 ]) {
-                  sh 'ssh -i $HOME_ASSISTANT_DEPLOY_KEY -l $HOME_ASSISTANT_USERNAME $HOME_ASSISTANT_HOST "sudo git -C /config pull && /etc/profile.d/homeassistant.sh && sudo ha core restart"'
+                  sh '''
+                    ssh -i $HOME_ASSISTANT_DEPLOY_KEY -l $HOME_ASSISTANT_USERNAME $HOME_ASSISTANT_HOST "sudo bash -c 'git -C /config pull && source /etc/profile.d/homeassistant.sh && ha core restart;'"
+                  '''
                 }
             }
         }
