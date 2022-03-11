@@ -6,8 +6,8 @@ pipeline {
             agent {
                 docker {
                     image 'ghcr.io/home-assistant/home-assistant:stable'
-                    args '-v ${PWD}:/config'
-                    reuseNode true
+                    customWorkspace "/home/austin/build/hass/${GIT_BRANCH}"
+                    args "-v /home/austin/build/hass/${GIT_BRANCH}:/config"
                 }
             }
             steps {
