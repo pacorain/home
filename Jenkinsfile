@@ -7,6 +7,7 @@ pipeline {
                 docker {
                     image 'ghcr.io/home-assistant/home-assistant:stable'
                     args '-v ${PWD}:/config'
+                    reuseNode true
                 }
             }
             steps {
