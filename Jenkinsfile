@@ -1,17 +1,12 @@
 pipeline {
-    agent none
+    agent any
 
     stages { 
         stage('Test') {
-            agent {
-                docker {
-                    image 'ghcr.io/home-assistant/home-assistant:stable'
-                    reuseNode true
-                    args '-v ${WORKSPACE}:/config --entrypoint \'\''
-                }
-            }
             steps {
+              docker.image('ghcr.io/home-assistant/home-assistant:stable').inside() {
                 sh 'hass --script check-config'
+              }
             }
           }
       
