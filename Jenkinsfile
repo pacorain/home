@@ -8,14 +8,12 @@ pipeline {
                     image 'ghcr.io/home-assistant/home-assistant:stable'
                     args '-v $PWD:/config'
                 }
-                steps {
-                    sh 'hass --script check-config'
-                }
             }
-        }
-
+            steps {
+                sh 'hass --script check-config'
+            }
+          }
       
-
         stage('Deploy') {
             agent any
             when {
