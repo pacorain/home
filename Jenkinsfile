@@ -1,22 +1,14 @@
 pipeline {
-    agent none
+    agent {label 'local'}
 
     stages { 
         stage('Test') {
-            agent {
-                docker {
-                    image 'ghcr.io/home-assistant/home-assistant:stable'
-                    reuseNode true
-                    args '-v ${WORKSPACE}:/config --entrypoint ""'
-                }
-            }
             steps {
-                sh 'hass --script check-config'
+                sh 'docker run --rm -v ${PWD}:/config ghcr.io/home-assistant/home-assistant:stable hass --script check-config'
             }
           }
       
         stage('Deploy') {
-            agent any
             when {
               branch 'main'
             }
