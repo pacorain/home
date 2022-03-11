@@ -4,7 +4,7 @@ pipeline {
     stages { 
         stage('Test') {
             steps {
-                sh 'docker run --rm -v ${PWD}:/config ghcr.io/home-assistant/home-assistant:stable hass --script check_config'
+                sh 'docker run --rm -v ${PWD}:/config ghcr.io/home-assistant/home-assistant:stable hass --script check_config -c /config'
             }
           }
       
