@@ -6,7 +6,7 @@ pipeline {
             agent {
                 docker {
                     image 'ghcr.io/home-assistant/home-assistant:stable'
-                    args "-v $WORKSPACE:/config"
+                    args '-v ${PWD}:/config'
                 }
             }
             steps {
