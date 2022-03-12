@@ -4,14 +4,16 @@ trigger:
   - platform: time
     at: "05:00:00"
 condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-  - condition: state
+  - condition: or
+    conditions:
+      - condition: time
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+      - "{{ now().date().isoformat() == '2022-03-12' }}"
     entity_id: input_boolean.office_climate_schedule
     state: "on"
 
