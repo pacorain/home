@@ -14,6 +14,7 @@ condition:
         - thu
         - fri
       - "{{ now().date().isoformat() == '2022-03-12' }}"
+  - condition: state
     entity_id: input_boolean.office_climate_schedule
     state: "on"
 
