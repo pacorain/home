@@ -1,0 +1,3 @@
+# Notification Groups
+
+notify: !include_dir_list groups
