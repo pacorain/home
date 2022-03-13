@@ -1,0 +1,18 @@
+id: house_too_hot
+alias: "Notify me if the house is getting too warm"
+trigger:
+  - platform: numeric_state
+    entity_id: 
+      - sensor.living_room_motion_temperature
+      - sensor.nursery_door_temperature
+      - sensor.heat_air_temperature
+    above: 78
+
+action:
+  - service: notify.mobile_app_austin_iphone
+    data:
+      title: Wood Furnace
+      message: "It's getting too warm at {{ trigger.entity_id }}"
+      data:
+          push:
+            interruption-level: time-sensitive

@@ -1,0 +1,28 @@
+id: fire_dying
+alias: "Notify me if the wood furnace gets below certain temperatures"
+trigger:
+  - platform: numeric_state
+    entity_id: 
+      - sensor.wood_furnace_temperature
+    below: 85
+  - platform: numeric_state
+    entity_id: 
+      - sensor.wood_furnace_temperature
+    below: 82
+  - platform: numeric_state
+    entity_id: 
+      - sensor.wood_furnace_temperature
+    below: 79
+  - platform: numeric_state
+    entity_id: 
+      - sensor.wood_furnace_temperature
+    below: 75
+
+action:
+  - service: notify.mobile_app_austin_iphone
+    data:
+      title: Wood Furnace
+      message: "The fire is dying. Feed me!"
+      data:
+          push:
+            interruption-level: time-sensitive
