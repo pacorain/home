@@ -35,18 +35,18 @@ action:
           - service: notify.household_ios
             data:
               title: Wood Furnace
-              message: "I'm not so sure there's a fire anymore. It's at {{trigger.to_state}}º. Feed me!"
+              message: "I'm not so sure there's a fire anymore. It's at {{trigger.to_state.state}}º. Feed me!"
               data:
                   push:
                     interruption-level: time-sensitive
       - alias: "Warn that the fire might be dying"
         conditions:
-          - "{{ trigger.to_state < 100 }}"
+          - "{{ trigger.to_state < 90 }}"
         sequence:
           - service: notify.household_ios
             data:
               title: Wood Furnace
-              message: "The fire is starting to die down. It's at {{trigger.to_state}}º."
+              message: "The fire is starting to die down. It's at {{trigger.to_state.state}}º."
               data:
                   push:
                     interruption-level: time-sensitive
@@ -54,7 +54,7 @@ action:
       - service: notify.household_ios
         data:
           title: Wood Furnace
-          message: "The fire is starting to die down. It's at {{trigger.to_state}}º."
+          message: "The fire is getting cooler. It's at {{trigger.to_state.state}}º."
           data:
               push:
                 interruption-level: time-sensitive
