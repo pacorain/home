@@ -4,6 +4,14 @@ trigger:
   - platform: numeric_state
     entity_id: 
       - sensor.wood_furnace_temperature
+    below: 100
+  - platform: numeric_state
+    entity_id: 
+      - sensor.wood_furnace_temperature
+    below: 90
+  - platform: numeric_state
+    entity_id: 
+      - sensor.wood_furnace_temperature
     below: 85
   - platform: numeric_state
     entity_id: 
@@ -19,10 +27,34 @@ trigger:
     below: 75
 
 action:
-  - service: notify.mobile_app_austin_iphone
-    data:
-      title: Wood Furnace
-      message: "The fire is dying. Feed me!"
-      data:
-          push:
-            interruption-level: time-sensitive
+  - choose:
+      - alias: "Alert that the fire is dying"
+        conditions:
+          - "{{ trigger.to_state <= 82 }}"
+        sequence:
+          - service: notify.household_ios
+            data:
+              title: Wood Furnace
+              message: "I'm not so sure there's a fire anymore. It's at {{trigger.to_state}}º. Feed me!"
+              data:
+                  push:
+                    interruption-level: time-sensitive
+      - alias: "Warn that the fire might be dying"
+        conditions:
+          - "{{ trigger.to_state < 100 }}"
+        sequence:
+          - service: notify.household_ios
+            data:
+              title: Wood Furnace
+              message: "The fire is starting to die down. It's at {{trigger.to_state}}º."
+              data:
+                  push:
+                    interruption-level: time-sensitive
+    default:
+      - service: notify.household_ios
+        data:
+          title: Wood Furnace
+          message: "The fire is starting to die down. It's at {{trigger.to_state}}º."
+          data:
+              push:
+                interruption-level: time-sensitive
