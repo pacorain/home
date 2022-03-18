@@ -1,0 +1,3 @@
+media_player:
+  - platform: itunes
+    host: !secret host_itunes
