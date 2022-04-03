@@ -1,0 +1,12 @@
+- id: media_tag_scanner_we_dont_talk_about_bruno
+  alias: "Media Tag Scanner: We Don't Talk About Bruno"
+  trigger:
+    - platform: tag
+      tag_id: 04-EA-B2-05-39-6C-80
+  action:
+    - service: script.media_tag_music
+      data: 
+        type: song
+        title: We Don't Talk About Bruno
+        tag: "{{ trigger.event.data.tag_id }}"
+        device: "{{ trigger.event.data.device_id }}"
