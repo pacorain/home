@@ -1,7 +1,13 @@
-homeassistant:
-  packages:
-    scanner: !include scanner/package.yaml
 
 media_player:
   - platform: itunes
     host: !secret network_host_itunes
+
+automation scanner: !include_dir_merge_list scanner/cards
+script scanner: !include_dir_named scanner/scripts
+rest_command: !include_dir_named scanner/rest_commands
+
+input_text scanner:
+  itunes_host:
+    name: iTunes Host
+    inital: !secret network_host_itunes

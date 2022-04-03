@@ -5,3 +5,4 @@ payload: |
   {% set body = {'name': name } %}
   {{ body|to_json(ensure_ascii=True) }}
 content_type: "json"
+verify_ssl: false
