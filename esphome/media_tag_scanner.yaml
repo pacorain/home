@@ -8,6 +8,16 @@ logger:
 
 api:
   password: ""
+  services:
+    - service: media_tag_disabled
+      then:
+        - rtttl.play: disabled:d=16,o=4,b=180:c,p,c,p,c
+    - service: media_tag_failed
+      then:
+        - rtttl.play: fail:d=64,o=4,b=180:c5,a,d,16c
+    - service: media_tag_success
+      then:
+        - rtttl.play: success:d=64,o=5,b=220:c,d,e,f,a,b,c6
 
 ota:
   password: ""
@@ -16,8 +26,22 @@ wifi:
   ssid: !secret esphome_ssid
   password: !secret esphome_sk
 
-i2c:
-  scan: true
+output: 
+  - platform: esp8266_pwm
+    pin: D3
+    frequency: 1000hz
+    id: rtttl_out
 
-rc522_i2c:
+rtttl:
+  output: rtttl_out   
 
+spi:
+  clk_pin: GPIO14
+  mosi_pin: GPIO13
+  miso_pin: GPIO12
+
+rc522_spi:
+  cs_pin: GPIO15
+  on_tag:
+    then:
+      - homeassistant.tag_scanned: !lambda 'return x;'
