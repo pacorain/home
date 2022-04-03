@@ -7,7 +7,7 @@ automation scanner: !include_dir_merge_list scanner/cards
 script scanner: !include_dir_named scanner/scripts
 rest_command: !include_dir_named scanner/rest_commands
 
-input_text scanner:
+input_text:
   itunes_host:
     name: iTunes Host
-    inital: !secret network_host_itunes
+    initial: !secret network_host_itunes
