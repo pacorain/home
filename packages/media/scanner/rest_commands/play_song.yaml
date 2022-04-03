@@ -1,5 +1,5 @@
 url: |
-  http://{{ states('input_text.itunes_host') }}/play_song
+  http://{{ states('input_text.itunes_host') }}:8182/play_song
 method: POST
 payload: |
   {% set body = {'name': name } %}
