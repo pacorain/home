@@ -17,3 +17,4 @@
                 title: "{{ tags[trigger.event.data.tag_id].title }}"
                 tag: "{{ trigger.event.data.tag_id }}"
                 device: "{{ trigger.event.data.device_id }}"
+    - service: esphome.media_tag_success
