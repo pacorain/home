@@ -44,4 +44,5 @@ rc522_spi:
   cs_pin: GPIO15
   on_tag:
     then:
+      - rtttl.play: scan:d=64,o=5;b=220:e
       - homeassistant.tag_scanned: !lambda 'return x;'
