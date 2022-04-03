@@ -4,5 +4,5 @@ method: POST
 payload: |
   {% set body = {'name': name } %}
   {{ body|to_json(ensure_ascii=True) }}
-content_type: "json"
+content_type: "application/json"
 verify_ssl: false
