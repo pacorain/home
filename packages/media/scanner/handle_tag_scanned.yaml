@@ -1,0 +1,19 @@
+- id: media_tag_scanner_handle_tag
+  alias: "Media Tag Scanner - Card Scanned"
+  variables:
+    tags: !include_dir_merge_named cards
+  trigger:
+    - platform: tag
+  condition:
+    - "{{ trigger.event.data.tag_id in tags }}"
+  action:
+    - choose:
+        - alias: "Music tag"
+          conditions: "{{ tags[trigger.event.data.tag_id].type in ['song'] }}"
+          sequence:
+            - service: script.media_tag_music
+              data: 
+                type: "{{ tags[trigger.event.data.tag_id].type }}"
+                title: "{{ tags[trigger.event.data.tag_id].title }}"
+                tag: "{{ trigger.event.data.tag_id }}"
+                device: "{{ trigger.event.data.device_id }}"

@@ -3,7 +3,7 @@ media_player:
   - platform: itunes
     host: !secret network_host_itunes
 
-automation scanner: !include_dir_merge_list scanner/cards
+automation scanner: !include scanner/handle_tag_scanned.yaml
 script scanner: !include_dir_named scanner/scripts
 rest_command: !include_dir_named scanner/rest_commands
 
