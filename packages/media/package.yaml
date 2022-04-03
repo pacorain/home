@@ -1,3 +1,7 @@
+homeassistant:
+  packages:
+    scanner: !include scanner/package.yaml
+
 media_player:
   - platform: itunes
     host: !secret network_host_itunes

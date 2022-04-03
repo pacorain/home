@@ -1,0 +1,8 @@
+automation: !include_dir_merge_list cards
+script: !include_dir_named scripts
+rest_command: !include_dir_named rest_commands
+
+input_text:
+  itunes_host:
+    name: iTunes Host
+    inital: !secret network_host_itunes
