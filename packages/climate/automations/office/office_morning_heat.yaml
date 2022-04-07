@@ -2,7 +2,7 @@ id: office_morning_heat
 alias: "Het up the office in the morning"
 trigger:
   - platform: time
-    at: "05:00:00"
+    at: "03:00:00"
 condition:
   - condition: time
     weekday:
@@ -19,11 +19,11 @@ action:
   - alias: "Turn on the heat"
     service: climate.turn_on
     target:
-      entity_id: climate.office_thermosta
+      entity_id: climate.office_thermostat
   - alias: "Set the heat thermostat"
     service: climate.set_temperature
     target:
       entity_id: climate.office_thermostat
     data:
       hvac_mode: heat
-      temperature: 60
+      temperature: 65
