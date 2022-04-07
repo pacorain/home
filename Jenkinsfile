@@ -32,7 +32,7 @@ pipeline {
         script {
           if (env.BRANCH_NAME == 'main') {
             withCredentials([string(credentialsId: 'discordWebhookSmarthome', variable: 'DISCORD_WEBHOOK_SMARTHOME')]) {
-              discordSend description: sh(returnStdout:true, script: "git log --format=format:%s -1 ${GIT_COMMIT}"), link: "https://github.com/pacorain/home/commit/${env.GIT_COMMIT}", result: currentBuild.currentResult, title: env.JOB_NAME, webhookURL: env.DISCORD_WEBHOOK_SMARTHOME
+              discordSend description: sh(returnStdout:true, script: "git log --format=format:%s -1 ${GIT_COMMIT}"), link: "https://github.com/pacorain/home/commit/${env.GIT_COMMIT}", result: currentBuild.currentResult, title: "Smart Home updates deploy: ${currentBuild.currentResult}", webhookURL: env.DISCORD_WEBHOOK_SMARTHOME
             }
           }
         }
