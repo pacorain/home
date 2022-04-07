@@ -29,9 +29,11 @@ pipeline {
 
     post {
       always {
-        if (env.BRANCH_NAME == 'master') {
-          withCredentials([string(credentialsId: 'discordWebhookSmarthome', variable: 'DISCORD_WEBHOOK_SMARTHOME')]) {
-            discordSend description: "Home Assistant Deploy", link: env.BUILD_URL, result: currentBuild.currentResult, title: env.JOB_NAME, webhookURL: env.DISCORD_WEBHOOK_SMARTHOME
+        script {
+          if (env.BRANCH_NAME == 'master') {
+            withCredentials([string(credentialsId: 'discordWebhookSmarthome', variable: 'DISCORD_WEBHOOK_SMARTHOME')]) {
+              discordSend description: "Home Assistant Deploy", link: env.BUILD_URL, result: currentBuild.currentResult, title: env.JOB_NAME, webhookURL: env.DISCORD_WEBHOOK_SMARTHOME
+            }
           }
         }
       }
