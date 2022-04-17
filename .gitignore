@@ -17,3 +17,5 @@ scripts.yaml
 # Setup files
 !*file
 !.vscode/
+!www/**
+!www/
