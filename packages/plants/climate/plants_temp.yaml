@@ -1,0 +1,8 @@
+# I have a motion sensor detecting temperature right now
+
+platform: generic_thermostat
+name: Plants Temp
+heater: switch.basement_heater
+target_sensor: sensor.plants_motion_temperature
+min_temp: 45
+max_temp: 85
