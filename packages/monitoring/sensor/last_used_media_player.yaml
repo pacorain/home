@@ -1,0 +1,12 @@
+platform: template
+sensors: 
+  last_used_media_player:
+    friendly_name: Last Used Media Player
+    unique_id: last_used_media_player
+    value_template: |
+      {%-
+        set latest = states.media_player 
+          | sort(attribute='last_updated')
+          | last
+      -%}
+      {{ latest.entity_id if now() - latest.last_updated <= timedelta(minutes=10) }}
