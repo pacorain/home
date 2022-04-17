@@ -1,0 +1,6 @@
+# Permission to Burn Sensor
+
+scrape:
+  resource: https://www2.dnr.state.mi.us/BurnPermits/Search.aspx?CHIPPEWA
+  select: table#ctl00_ContentPlaceHolder1_GridView1 tr
+  index: 3
