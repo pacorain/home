@@ -1,0 +1,31 @@
+# Counts how many rooms have lights on
+
+platform: template
+sensors:
+  lit_areas:
+    friendly_name: "Lit rooms"
+    unique_id: template_lit_areas
+    value_template: |
+      {{ 
+        states.light 
+        | selectattr("state", "equalto", "on") 
+        | map(attribute="entity_id") 
+        | map("area_name")
+        | reject("equalto", None)
+        | unique
+        | list 
+        | count 
+      }}
+    unit_of_measurement: rooms
+    attribute_templates:
+      rooms: | 
+        {{ 
+          states.light 
+          | selectattr("state", "equalto", "on") 
+          | map(attribute="entity_id") 
+          | map("area_name")
+          | reject("equalto", None)
+          | unique
+          | list  
+        }}
+    

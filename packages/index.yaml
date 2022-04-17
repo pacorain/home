@@ -4,6 +4,7 @@ climate: !include climate/package.yaml
 core: !include core/package.yaml
 influxdb: !include influxdb/package.yaml
 media: !include media/package.yaml
+monitoring: !include monitoring/package.yaml
 network: !include network/package.yaml
 notify: !include notify/package.yaml
 plants: !include plants/package.yaml
