@@ -17,6 +17,7 @@ input_select:
 input_text:
 logbook:
 logger: !include logger.yaml
+lovelace: !include lovelace/lovelace.yaml
 map:
 media_source:
 mobile_app:

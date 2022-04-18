@@ -1,0 +1,94 @@
+views:
+  - theme: Backend-selected
+    title: Favorites
+    icon: mdi:home-heart
+    path: favorites
+    background: center / cover fixed no-repeat url('/local/images/DSC_2503.jpeg')
+    badges: []
+    cards:
+      - type: markdown
+        content: >-
+          # Good {% if state_attr('sun.sun', 'rising') -%}
+            morning
+          {%- elif state_attr('sun.sun', 'elevation') > 20 -%}
+            afternoon
+          {%- else -%}
+            evening
+          {%- endif -%}, {{ user.split()[0] }}!
+
+
+          {% set conditions = state_attr('weather.home_hourly', 'forecast')
+              | map(attribute='condition') | unique | list %}
+
+          It's currently {{ 
+            state_attr(
+              'weather.home', 
+              'temperature'
+            )
+          }}ºF outside. You can expect {% if conditions | count == 1 -%}
+            {{ conditions[0] }}
+          {%- elif conditions | count == 2 -%}
+            a mix of {{ conditions[0] }} and {{ conditions[1] }}
+          {%- else -%}
+            {{ ", ".join(conditions[:-1]) + ", and " + conditions[-1] }}
+          {%- endif %} weather in the next {{ state_attr('weather.home_hourly',
+          'forecast') | count }} hours.
+      - square: true
+        columns: 3
+        type: grid
+        cards:
+          - show_state: true
+            show_name: false
+            camera_view: auto
+            type: picture-entity
+            entity: person.austin_rainwater
+            image: /api/image/serve/242c7d199bf5b2819f3ad425c50a549d/512x512
+          - show_state: true
+            show_name: false
+            camera_view: auto
+            type: picture-entity
+            entity: person.rachael_rainwater
+            image: /api/image/serve/1c55d85acd070652453f869044cdbd78/512x512
+          - show_state: true
+            show_name: false
+            camera_view: auto
+            type: picture-entity
+            entity: person.rose_rainwater
+            image: /api/image/serve/0aa1970f720b9762de88cecd12c1fa72/512x512
+        view_layout:
+          position: sidebar
+      - square: true
+        columns: 5
+        type: grid
+        cards:
+          - show_name: true
+            show_icon: true
+            type: button
+            tap_action:
+              action: more-info
+            entity: climate.heat
+            show_state: false
+      - type: area
+        area: living_room
+      - type: vertical-stack
+        cards:
+          - type: conditional
+            conditions:
+              - entity: sensor.last_used_media_player
+                state: media_player.roku_express
+            card:
+              type: media-control
+              entity: media_player.roku_express
+          - type: conditional
+            conditions:
+              - entity: sensor.last_used_media_player
+                state: media_player.living_room
+            card:
+              type: media-control
+              entity: media_player.living_room
+      - type: entities
+        entities:
+          - entity: light.seed_starter_uv_light
+          - entity: climate.plants_temp
+        title: Seed Starter
+        state_color: true

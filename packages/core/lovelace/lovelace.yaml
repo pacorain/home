@@ -1,0 +1,13 @@
+# Lovelace configuration
+#
+# Configured to share my dashboard configuration with others.
+
+# I'm leaving the stored dashboard as-is until I can get a functioning dashboard in its place.
+mode: storage
+dashboards:
+  lovelace-staging:  # A staging environment for YAML Lovelace dashboards
+    mode: yaml
+    filename: dashboards/staging.yaml
+    title: Staging
+    icon: mdi:home-plus-outline
+    require_admin: true
