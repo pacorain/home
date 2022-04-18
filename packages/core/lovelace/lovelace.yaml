@@ -3,7 +3,7 @@
 # Configured to share my dashboard configuration with others.
 
 # I'm leaving the stored dashboard as-is until I can get a functioning dashboard in its place.
-mode: storage
+mode: yaml
 dashboards:
   lovelace-staging:  # A staging environment for YAML Lovelace dashboards
     mode: yaml

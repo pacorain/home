@@ -1,0 +1,3 @@
+views:
+  - !include dashboards/view-home.yaml
+  - !include dashboards/view-all.yaml
