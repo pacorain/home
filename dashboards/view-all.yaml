@@ -1,0 +1,5 @@
+strategy:
+  type: original-states
+  icon: mdi:infinity
+  title: All
+  path: all
