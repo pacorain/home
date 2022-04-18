@@ -1,0 +1,4 @@
+platform: tod
+name: Seed Starter Light Schedule
+after: "06:00"
+before: "22:00"

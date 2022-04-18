@@ -1,1 +1,3 @@
 climate: !include_dir_merge_named climate
+automation: !include_dir_list automation
+binary_sensor: !include_dir_list binary_sensor
