@@ -1,0 +1,5 @@
+<<: !include hardware/sonoff_basic_r2.yaml
+
+substitutions:
+  device_name: plant-uv-light
+  friendly_name: Seed Starter UV Light

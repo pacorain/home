@@ -34,7 +34,7 @@ binary_sensor:
     on_press:
       - switch.toggle: relay
   - platform: status
-    name: "Status"
+    name: "$friendly_name Status"
   - platform: template
     name: "$friendly_name Breaker Tripped"
     id: breaker
