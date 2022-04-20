@@ -7,13 +7,13 @@ action:
   - alias: "Select service to call"
     choose:
     - conditions: |
-        {{ trigger.to_state == 'on' }}
+        {{ trigger.to_state.state == 'on' }}
       sequence:
         - service: light.turn_on
           target:
             entity_id: light.seed_starter_uv_light
     - conditions: |
-        {{ trigger.to_state == 'off' }}
+        {{ trigger.to_state.state == 'off' }}
       sequence:
         - service: light.turn_off
           target:
