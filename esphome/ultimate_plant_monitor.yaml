@@ -1,0 +1,69 @@
+esphome:
+  name: plant-monitor
+
+esp8266:
+  board: d1_mini
+
+wifi:
+  ssid: !secret esphome_ssid
+  password: !secret esphome_sk
+
+logger:
+
+ota:
+
+api:
+
+i2c:
+  sda: D2
+  scl: D1
+  scan: True
+
+ads1115:
+  - address: 0x48
+    id: upper_hub
+  - address: 0x49
+    id: middle_hub
+  - address: 0x4a
+    id: lower_hub
+
+sensor:
+  - platform: ads1115
+    ads1115_id: upper_hub
+    gain: 4.096
+    multiplexer: 'A0_GND'
+    name: 'Test Moisture 1'
+    update_interval: 1s
+    device_class: ""
+    unit_of_measurement: µS/cm
+    filters:
+    - calibrate_linear:
+      # Plugged into 3.3V input
+      - 3.3 -> 0.0
+      # Measured with 20ºC water
+      # See https://en.wikipedia.org/wiki/Conductivity_(electrolytic)#/media/File:Conductivity_of_Pure_Water.svg
+      - 2.425 -> 0.04194
+      
+
+  
+  - platform: ads1115
+    ads1115_id: upper_hub
+    gain: 4.096
+    multiplexer: 'A1_GND'
+    name: 'Test Moisture 2'
+    update_interval: 1s
+  
+  - platform: ads1115
+    ads1115_id: upper_hub
+    gain: 4.096
+    multiplexer: 'A3_GND'
+    name: 'Upper Shelf Ambient Light'
+    update_interval: 1s
+    device_class: "illuminance"
+    unit_of_measurement: lx
+    filters:
+      - calibrate_linear:
+        # This is very poor calibration. I should probably find a better way.
+        - 0.0 -> 0.0
+        - 3.2 -> 1000
+    
