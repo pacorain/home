@@ -1,6 +1,7 @@
 # Permission to Burn Sensor
 
-scrape:
+- plaftorm: scrape
   resource: https://www2.dnr.state.mi.us/BurnPermits/Search.aspx?CHIPPEWA
-  select: table#ctl00_ContentPlaceHolder1_GridView1 tr
-  index: 3
+  name: Permission to burn
+  select: table#ctl00_ContentPlaceHolder1_GridView1 tr:nth-of-type(4) td:nth-of-type(3)
+  value_template: 

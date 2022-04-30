@@ -1,1 +1,1 @@
-sensor: !include_dir_merge_named sensor
+sensor: !include_dir_merge_list sensor
