@@ -1,0 +1,3 @@
+[submodule "custom_components/michigan-dnr-burn-permits"]
+	path = custom_components/michigan-dnr-burn-permits
+	url = https://github.com/pacorain/michigan-dnr-burn-permits.git

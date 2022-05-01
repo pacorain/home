@@ -2,3 +2,5 @@
 !.gitignore
 !starlink
 !starlink/**
+
+!michigan-dnr-burn-permits
