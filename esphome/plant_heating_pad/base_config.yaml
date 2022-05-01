@@ -1,0 +1,23 @@
+<<: !include ../hardware/sonoff_basic_r2.yaml
+
+# No changes to base config yet...
+
+switch:
+  - platform: gpio
+    name: "$friendly_name Power"
+    pin: GPIO12
+    id: relay
+    restore_mode: ALWAYS_OFF
+
+button:
+  - platform: template
+    name: "$friendly_name Identify"
+    on_press:
+      then:
+        - light.turn_on: 
+            id: blue_led
+            effect: Identify
+            brightness: 100%
+        - delay: 5s
+        - light.turn_off:
+            id: blue_led

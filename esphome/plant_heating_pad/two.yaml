@@ -1,0 +1,6 @@
+<<: !include base_config.yaml
+
+substitutions:
+    device_name: plant-heater-$suffix
+    friendly_name: Plant Heater $suffix
+    suffix: two
