@@ -1,7 +1,9 @@
 # Permission to Burn Sensor
+#
+# Uses custom component, added as git submodule:
+#
+# https://github.com/pacorain/michigan-dnr-burn-permits
 
-- plaftorm: scrape
-  resource: https://www2.dnr.state.mi.us/BurnPermits/Search.aspx?CHIPPEWA
-  name: Permission to burn
-  select: table#ctl00_ContentPlaceHolder1_GridView1 tr:nth-of-type(4) td:nth-of-type(3)
-  value_template: 
+- plaftorm: michigan_dnr_burn_permits
+  county: !secret location_county
+  township: !secret location_township
