@@ -2,5 +2,5 @@ sensor:
   - platform: rest
     name: BoredHuman floor price
     resource: https://api.opensea.io/api/v1/collection/boredhuman-nft
-    value_template: value_json.collection.stats.floor_price
+    value_template: "{{ value_json.collection.stats.floor_price }}"
     unit_of_measurement: ETH
