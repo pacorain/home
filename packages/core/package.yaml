@@ -30,7 +30,7 @@ sun:
 system_health:
 tag:
 timer:
-updater:
+# updater:
 usb:
 webhook:
 zeroconf:

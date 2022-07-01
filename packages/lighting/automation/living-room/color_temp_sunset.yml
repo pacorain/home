@@ -1,0 +1,50 @@
+id: living_room_color_temp_sunset
+alias: Color the living room lights with the sun
+trigger:
+  - platform: time_pattern
+    minutes: /15
+condition: 
+  - condition: state
+    entity_id: input_boolean.living_room_light_automation
+    state: "on"
+  - condition: state
+    # Currently a ZHA group
+    entity_id: light.living_room_group
+    state: "on"
+action:
+  - variables:
+      sun_state: >
+        {% set seconds_to_dusk = state_attr('sun.sun', 'next_dusk') | as_timestamp - now() | as_timestamp -%}
+        {% set seconds_since_change = now() | as_timestamp - states.sun.sun.last_changed | as_timestamp -%}
+
+        {% if states('sun.sun') == 'below_horizon' -%}
+          0
+
+        {%- elif seconds_to_dusk < 10800 -%}
+          {{ [(seconds_to_dusk - 3600) / 7200, 0 ] | max }}
+
+        {%- elif seconds_since_change < 3600 -%}
+          0
+
+        {%- elif seconds_since_change < 10800 -%}
+          {{ (seconds_since_change - 3600) / 7200 }}
+
+        {%- else -%}
+          1
+
+        {%- endif -%}
+  - service: light.turn_on
+    target:
+      entity_id: light.living_room_group
+    data_template:
+      transition: 900
+      color_temp: |
+        {{  
+          state_attr('light.living_room_group', 'max_mireds')
+          - (sun_state * (
+              state_attr('light.living_room_group', 'max_mireds') 
+              - state_attr('light.living_room_group', 'min_mireds')
+            )
+          )
+        }}
+      
