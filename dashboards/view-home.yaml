@@ -85,9 +85,3 @@ cards:
         card:
           type: media-control
           entity: media_player.living_room
-  - type: entities
-    entities:
-      - entity: light.seed_starter_uv_light
-      - entity: climate.plants_temp
-    title: Seed Starter
-    state_color: true
