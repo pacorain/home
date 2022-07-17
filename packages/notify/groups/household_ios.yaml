@@ -1,6 +1,6 @@
 name: household_ios
 platform: group
 services:
-  - service: mobile_app_austin_iphone
+  - service: mobile_app_austins_iphone
   - service: mobile_app_austins_macbook_pro_2
   - service: mobile_app_rachaels_iphone
