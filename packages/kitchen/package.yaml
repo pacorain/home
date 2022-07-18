@@ -1,0 +1,49 @@
+input_datetime:
+  dehydrator_stop_time:
+    name: Dehydrator stop time
+    has_date: false
+    has_time: true
+    icon: mdi:air-filter
+
+automation:
+  - id: dehydrator_on_12_h
+    alias: Set the dehydrator to turn off after 12 hours
+    trigger:
+      - platform: state
+        entity_id: switch.dehydrator
+        to: "on"
+
+    action:
+      - service: input_datetime.set_datetime
+        target:
+          entity_id: input_datetime.dehydrator_stop_time
+        time: |
+          {{ (now() + timedelta(hours=12)).time() }}
+      - service: notify.household_ios
+        data_template:
+          title: Food Dehydrator
+          message: |-
+            The dehydrator has been turned on and will automatically turn off at 
+            {{ states('input_datetime.dst') }}. Open Home Assistant to change this time.
+
+  - id: dehydrator_off
+    alias: Turn the dehydrator off at the specified time
+    trigger:
+      - platform: time
+        at: input_datetime.dehydrator_stop_time
+
+    condition:
+      - condition: state
+        entity_id: switch.dehydrator
+        state: "on"
+    
+    action:
+      - service: switch.turn_off
+        target:
+          entity_id: switch.dehydrator
+
+      - service: notify.household_ios
+        data:
+          title: Food Dehydrator
+          message: |-
+            All done! The dehydrator has been switched off.

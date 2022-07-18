@@ -85,3 +85,17 @@ cards:
         card:
           type: media-control
           entity: media_player.living_room
+  - type: grid
+    cards:
+      - type: entity
+        entity: switch.dehydrator
+        state_color: true
+        name: Dehydrator
+      - type: conditional
+        conditions:
+          - entity: switch.dehydrator
+            state: 'on'
+        card: 
+          type: entity
+          entity: input_datetime.dehydrator_stop_time
+          name: Will turn off at
