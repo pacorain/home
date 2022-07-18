@@ -19,13 +19,15 @@ automation:
           entity_id: input_datetime.dehydrator_stop_time
         data:
           time: |
-            {{ (now() + timedelta(hours=12)).time() }}
+            {{ (now() + timedelta(hours=12)).strftime("%H:%M:00") }}
       - service: notify.household_ios
         data_template:
           title: Food Dehydrator
           message: |-
             The dehydrator has been turned on and will automatically turn off at 
-            {{ states('input_datetime.dst') }}. Open Home Assistant to change this time.
+            {{-
+              (states('input_datetime.dehydrator_stop_time') | today_at).strftime("%I:%M %p") 
+            -}}. Open Home Assistant to change this time.
 
   - id: dehydrator_off
     alias: Turn the dehydrator off at the specified time
