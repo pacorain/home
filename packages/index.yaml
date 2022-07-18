@@ -3,6 +3,7 @@
 climate: !include climate/package.yaml
 core: !include core/package.yaml
 influxdb: !include influxdb/package.yaml
+kitchen: !include kitchen/package.yam
 lighting: !include lighting/package.yaml
 media: !include media/package.yaml
 monitoring: !include monitoring/package.yaml
