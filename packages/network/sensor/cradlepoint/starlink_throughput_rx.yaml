@@ -1,0 +1,16 @@
+# The throughput of the device pluged into the Ethernet WAN port of the Cradlepoint router (in this)
+# case, happens to be Starlink
+
+name: Starlink Throughput RX
+
+platform: rest
+
+resource: http://192.168.0.1/api/status/wan/stats/in
+username: !secret network_cradlepoint_username
+password: !secret network_cradlepoint_password
+authentication: basic
+state_class: total_increasing
+unit_of_measurement: MB
+
+value_template: |-
+  {{ value_json.data }} / 1048576
