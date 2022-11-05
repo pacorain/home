@@ -1,6 +1,8 @@
 # The WAN IP address assigned over DHCP on the Ethernet port (which is currently plugged in to my)
 # Starlink sattelite.
 
+# TODO: Set up for `rest` platform before re-enabling
+
 name: Starlink IP
 
 platform: rest

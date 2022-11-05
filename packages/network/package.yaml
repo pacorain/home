@@ -6,4 +6,7 @@ wake_on_lan:
 
 # Load various entity configurations
 switch: !include_dir_list switch
-sensor: !include_dir_list sensor
+
+# RESTful sensors
+# https://www.home-assistant.io/integrations/rest
+rest: !include_dir_list rest
