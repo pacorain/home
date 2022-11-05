@@ -1,5 +1,5 @@
-# The throughput of the device pluged into the Ethernet WAN port of the Cradlepoint router (in this)
-# case, happens to be Starlink
+# The throughput of the device pluged into the Ethernet WAN port of the Cradlepoint router (in this
+# case, happens to be Starlink)
 
 resource: http://192.168.10.1/api/status/wan/stats
 username: !secret network_cradlepoint_username
@@ -10,10 +10,10 @@ sensor:
     state_class: total_increasing
     unit_of_measurement: MB
     value_template: |-
-      {{ value_json.data["in"]  / 1048576 }}
+      {{ (value_json.data["in"]  / 1048576) | round(2) }}
 
   - name: Starlink WAN data out
     state_class: total_increasing
     unit_of_measurement: MB
     value_template: |-
-      {{ value_json.data.out / 1048576 }}
+      {{ (value_json.data.out / 1048576) | round(2) }}
