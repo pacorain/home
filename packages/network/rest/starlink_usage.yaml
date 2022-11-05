@@ -10,10 +10,10 @@ sensor:
     state_class: total_increasing
     unit_of_measurement: MB
     value_template: |-
-      {{ value_json.data["in"] }} / 1048576
+      {{ value_json.data["in"]  / 1048576 }}
 
   - name: Starlink WAN data out
     state_class: total_increasing
     unit_of_measurement: MB
     value_template: |-
-      {{ value_json.data.out }} / 1048576
+      {{ value_json.data.out / 1048576 }}
