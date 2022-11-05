@@ -6,6 +6,7 @@ pipeline {
             steps {
                 sh 'cp fake_secrets.yaml secrets.yaml'
                 sh 'touch groups.yaml automations.yaml scenes.yaml scripts.yaml'
+                sh 'docker pull ghcr.io/home-assistant/home-assistant:stable'
                 sh 'docker run --rm -v ${PWD}:/config ghcr.io/home-assistant/home-assistant:stable hass --script check_config -c /config'
             }
           }
