@@ -11,9 +11,11 @@ sensor:
     unit_of_measurement: MB
     value_template: |-
       {{ (value_json.data["in"]  / 1048576) | round(2) }}
+    unique_id: cradlepoint_wan_data_in
 
   - name: Starlink WAN data out
     state_class: total_increasing
     unit_of_measurement: MB
     value_template: |-
       {{ (value_json.data.out / 1048576) | round(2) }}
+    unique_id: cradlepoint_wan_data_out
