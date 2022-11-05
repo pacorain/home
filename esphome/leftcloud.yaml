@@ -1,0 +1,5 @@
+substitutions:
+  node_name: leftcloud
+  device_name: Left Cloud
+
+<<: !include hardware/wixann.yaml

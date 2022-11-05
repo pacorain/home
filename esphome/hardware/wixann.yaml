@@ -1,0 +1,103 @@
+# Wixann lights
+
+esphome:
+  name: ${node_name}
+
+esp8266:
+  board: esp01_1m
+  
+
+wifi: 
+  <<: !include ../config/wifi_default.yaml
+  <<: !include ../config/fallback_ap.yaml
+
+time: !include ../config/time.yaml
+  
+
+output:
+  - platform: esp8266_pwm
+    pin: GPIO04
+    frequency: 288 Hz
+    id: pwm1
+  - platform: esp8266_pwm
+    pin: GPIO12
+    frequency: 288 Hz
+    id: pwm2
+  - platform: esp8266_pwm
+    pin: GPIO14
+    frequency: 288 Hz
+    id: pwm3
+  - platform: esp8266_pwm
+    pin: GPIO05
+    frequency: 288 Hz
+    id: pwm4
+  - platform: esp8266_pwm
+    pin: GPIO13
+    frequency: 288 Hz
+    id: pwm5
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+light:
+  - platform: rgbww
+    name: "${device_name}"
+    red: pwm1
+    green: pwm2
+    blue: pwm3
+    cold_white: pwm4
+    warm_white: pwm5
+    cold_white_color_temperature: 6500 K
+    warm_white_color_temperature: 2700 K
+    id: cloud
+    icon: mdi:cloud
+    constant_brightness: true
+    gamma_correct: 1.0
+    effects:
+      - random:
+          name: Colorful
+          transition_length: 5s
+          update_interval: 7s
+      - lambda:
+          name: Party Mode
+          update_interval: 429ms
+          lambda: |-
+            auto call = id(cloud).turn_on();
+            call.set_cold_white(0.0);
+            call.set_warm_white(0.0);
+            call.set_color_brightness(1.0);
+            call.set_rgb(random_float(), random_float(), random_float());
+            call.set_transition_length(0);
+            call.perform();
+      - lambda:
+          name: Nightlight
+          update_interval: 5s
+          lambda: |-
+            static int start_time = id(hass_time).utcnow().timestamp;
+            auto call = id(cloud).turn_on();
+            if (initial_run) {
+              call.set_transition_length(5000);
+              call.set_cold_white(0.0);
+              call.set_warm_white(1.0);
+              call.set_color_brightness(0.0);
+              call.set_rgb(0.0, 0.0, 0.0);
+              call.set_brightness(1.0);
+              call.perform();
+            } else if ((App.get_name() == "leftcloud") && (start_time + 10 < id(hass_time).utcnow().timestamp)) {
+              call.set_transition_length(1800000);
+              call.set_warm_white(0.25);
+              call.set_brightness(0.0);
+              call.perform();
+            } else {
+              call.set_transition_length(1800000);
+              call.set_warm_white(0.25);
+              call.set_brightness(0.00390625);
+              call.perform();
+            }
