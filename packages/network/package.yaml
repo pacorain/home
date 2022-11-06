@@ -10,3 +10,11 @@ switch: !include_dir_list switch
 # RESTful sensors
 # https://www.home-assistant.io/integrations/rest
 rest: !include_dir_list rest
+
+# Template sensors
+# https://www.home-assistant.io/integrations/template/
+template:
+  - sensor: !include_dir_list template/sensor
+
+# Utility meters
+utility_meter: !include_dir_named utility_meter

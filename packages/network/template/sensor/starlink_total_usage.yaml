@@ -1,0 +1,9 @@
+name: Starlink Total Usage
+unit_of_measurement: B
+state: >
+  {{ 
+    states('sensor.starlink_download_total_bytes') | float
+    + states('sensor.starlink_upload_total_bytes') | float
+  }}
+state_class: total_increasing
+unique_id: cradlepoint_ethernet_total_usage
