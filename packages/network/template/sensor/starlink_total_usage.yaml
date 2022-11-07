@@ -1,9 +1,9 @@
 name: Starlink Total Usage
-unit_of_measurement: B
+unit_of_measurement: GiB
 state: >
   {{ 
-    states('sensor.starlink_download_total_bytes') | float
-    + states('sensor.starlink_upload_total_bytes') | float
+    (states('sensor.starlink_download_total_bytes') | float
+    + states('sensor.starlink_upload_total_bytes') | float) / 1073741824
   }}
 state_class: total_increasing
 unique_id: cradlepoint_ethernet_total_usage
