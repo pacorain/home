@@ -1,0 +1,49 @@
+- theme: Backend-selected
+  title: Utilities
+  type: sidebar
+  icon: mdi:gauge
+  path: utilities
+  badges: []
+  cards:
+    - square: false
+      columns: 3
+      type: grid
+      title: Gas
+      cards:
+        - type: gauge
+          entity: sensor.estimated_gas_tank_level
+          needle: true
+          severity:
+            green: 50
+            yellow: 30
+            red: 3
+          max: 100
+          min: 5
+        - type: markdown
+          content: |-
+            **Last updated**
+
+            ## {{ 
+              states.input_number
+              .last_measured_gas_tank_level
+              .last_updated
+              .strftime("%a, %b %-d") 
+            }}
+
+            {%- set runtime = states('sensor.furnace_usage_since_last_check') 
+              | round
+            %}
+
+            {{ runtime }} hour{{ iif(runtime == 1, '', 's') }} runtime
+        - show_name: true
+          show_icon: true
+          type: button
+          tap_action:
+            action: more-info
+          entity: input_number.last_measured_gas_tank_level
+          name: Update now
+          show_state: false
+          hold_action:
+            action: none
+      view_layout:
+        position: main
