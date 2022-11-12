@@ -18,7 +18,6 @@
     - service: persistent_notification.create
       data: 
         title: Please check the propane tank
-        # TODO: Include a link to a dashboard
         message: >-
           The propane tank has not been checked in 
           {{ states.input_number.last_measured_gas_tank_level.last_updated | relative_time }}, and 
@@ -29,10 +28,13 @@
 
           Please check the tank level, and update the sensor 
           `input_number.last_measured_gas_tank_level`.
+
+
+
+          [Utilities dashboard](/lovelace/utilities)
         notification_id: "gas-tank-check-recommended"
   
     # Only notify every 4 hours
-    # TODO: Change to notify.austin_rainwater
     - if:
         - or: 
           - "{{ trigger.platform == 'state' }}"
@@ -41,7 +43,6 @@
         - alias: "Notify Austin"
           service: notify.mobile_app_austins_iphone
           data:
-            # TODO: Pass link to dashboard URL
             title: Gas tank check needed
             message: >-
               Please enter the gas tank level.
@@ -55,7 +56,7 @@
               group: "gas-tank"
               subtitle: Tap and hold to enter a value
               actions:
-              # TODO: What to do when a level is entered
+              url: /lovelace/utilities
               - title: Enter a level
                 action: gas_level_entered
                 behavior: textInput
@@ -127,7 +128,6 @@
     - service: persistent_notification.create
       data: 
         title: ⚠️ Gas tank low
-        # TODO: Include a link to a dashboard
         message: >-
           The estimated gas tank level is **{{ states('sensor.estimated_gas_tank_level') 
           | round }}%**. 
@@ -136,12 +136,15 @@
           
           Please [call {{ gas_company_name }}](tel://{{ gas_company_phone }}) to request a refill,
           or [request a refill from the website]({{ gas_company_login }}).
+
+
+
+          [Utilities dashboard](/lovelace/utilities)
         notification_id: "gas-tank-low"
     
     - alias: "Notify household"
       service: notify.household_ios
       data:
-        # TODO: Pass link to dashboard URL
         title: >
           Gas tank low
         message: >
@@ -150,8 +153,8 @@
         data:
           tag: "gas-tank-low"
           group: "gas-tank"
+          url: /lovelace_utilities
           actions:
-          # TODO: What to do when a level is entered
           - title: >
               Call {{ gas_company_name }}
             action: URI
