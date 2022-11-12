@@ -1,0 +1,9 @@
+platform: history_stats
+name: Furnace usage since last check
+entity_id: binary_sensor.furnace_is_heating
+state: "on"
+type: time
+start: |
+  {{ states.input_number.last_measured_gas_tank_level.last_updated }}
+end: |
+  {{ now() }}
