@@ -6,6 +6,7 @@ last_measured_gas_tank_level:
   max: 100
   step: 0.5
   unit_of_measurement: "%"
+  mode: box
   icon: mdi:storage-tank
 
 # This controls how to calculate the estimated gas usage
