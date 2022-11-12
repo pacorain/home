@@ -5,7 +5,7 @@
   trigger:
     - platform: state
       entity_id: binary_sensor.tank_check_recommended
-      state: "on"
+      to: "on"
     - platform: time_pattern
       minutes: "0"
       hours: "*"
@@ -35,10 +35,8 @@
     # TODO: Change to notify.austin_rainwater
     - if:
         - or: 
-          - alias: "Triggered by state change"
-            condition: "{{ trigger.platform == 'state' }}"
-          - alias: "Every 4 hours"
-            condition: "{{ trigger.now.hour % 4 == 0 }}"
+          - "{{ trigger.platform == 'state' }}"
+          - "{{ trigger.now.hour % 4 == 0 }}"
       then:
         - alias: "Notify Austin"
           service: notify.mobile_app_austins_iphone
@@ -73,7 +71,7 @@
   trigger:
     - platform: state
       entity_id: binary_sensor.tank_check_recommended
-      state: "off"
+      to: "off"
   action:
     - service: persistent_notification.dismiss
       data:
@@ -106,7 +104,7 @@
   trigger:
     - platform: state
       entity_id: binary_sensor.gas_tank_low
-      state: "on"
+      to: "on"
       id: gas_tank_low
     - platform: state
       entity_id: sensor.estimated_gas_tank_level
@@ -184,7 +182,7 @@
   trigger:
     - platform: state
       entity_id: binary_sensor.gas_tank_low
-      state: "off"
+      to: "off"
   action:
     - service: persistent_notification.dismiss
       data:
