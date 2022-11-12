@@ -1,0 +1,17 @@
+
+# To start, someone has to check the meter and enter what level the meter is at.
+last_measured_gas_tank_level:
+  name: Last measured gas tank level
+  min: 0
+  max: 100
+  step: 0.5
+  unit_of_measurement: "%"
+  icon: mdi:storage-tank
+
+# This controls how to calculate the estimated gas usage
+tank_usage_factor:
+  name: Tank usage estimation factor
+  min: 0
+  max: 1
+  type: box
+  icon: mdi:function-variant

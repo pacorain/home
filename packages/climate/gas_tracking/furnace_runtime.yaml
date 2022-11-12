@@ -1,0 +1,19 @@
+# A sensor that tracks whether the furnace's "hvac_action" is heating
+template:
+  - binary_sensor:
+    - name: Furnace is heating
+      value_template: |
+        {{ state_attr('climate.heat', 'hvac_action') == 'heating' }}
+      unique_id: climate.heat.is_heating
+      icon: mdi:gas-burner
+
+# Tracks *how long* the "hvac_action" is heating (since the last tank check)
+sensor:
+  - platform: history_stats
+    name: Furnace usage since last check
+    entity_id: binary_sensor.furnace_is_heating
+    type: time
+    start: |
+      {{ states.input_number.last_measured_gas_tank_level.last_updated }}
+    end: |
+      {{ now() }}
