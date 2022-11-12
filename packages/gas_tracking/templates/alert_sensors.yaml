@@ -15,7 +15,7 @@ binary_sensor:
             * states('sensor.furnace_usage_since_last_check') | float(None)
         ) <= 5
       }} 
-    availabilty: >-
+    availability: >-
       {{
         states('input_number.last_measured_gas_tank_level') | is_number
           and states('input_number.tank_usage_factor') | is_number

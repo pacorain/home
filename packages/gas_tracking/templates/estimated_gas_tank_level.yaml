@@ -11,7 +11,7 @@ sensor:
         )
       }}
     unique_id: climate.gas_tracking.estimated_gas_tank_level
-    availabilty: >-
+    availability: >-
       {{
         states('input_number.last_measured_gas_tank_level') | is_number
           and states('input_number.tank_usage_factor') | is_number
