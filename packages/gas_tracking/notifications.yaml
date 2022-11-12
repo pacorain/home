@@ -13,6 +13,7 @@
     - condition: state
       entity_id: binary_sensor.tank_check_recommended
       state: "on"
+    - "{{ states('input_number.last_measured_gas_tank_level') | float(0) > 0 }}"
   action:
     # Put a persistent notification on Home Assistant
     - service: persistent_notification.create
@@ -119,6 +120,7 @@
       conditions:
         - "{{ trigger.id != 'gas_tank_decreased' }}"
         - "{{ trigger.from_state.state | int != trigger.to_state.state | int }}"
+    - "{{ states('input_number.last_measured_gas_tank_level') | float(0) > 0 }}"
 
   action:
     # Set variables from a private file
