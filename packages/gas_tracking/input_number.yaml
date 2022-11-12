@@ -1,3 +1,7 @@
+# Input Number
+# https://www.home-assistant.io/integrations/input_number/
+#
+# These are the values that need to be entered in Home Assistant to guess the gas tank level.
 
 # To start, someone has to check the meter and enter what level the meter is at.
 last_measured_gas_tank_level:

@@ -1,3 +1,10 @@
+# The only automations that are needed are to handle notifying when the gas tank is low.
+#
+# The notifications used are persistent notifications and iOS notifications:
+#
+# - https://www.home-assistant.io/integrations/persistent_notification/
+# - https://companion.home-assistant.io/docs/notifications/actionable-notifications/
+
 
 - id: on_tank_check_recommended
   alias: "Gas tank: On check recommended"

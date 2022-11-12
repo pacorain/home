@@ -1,3 +1,7 @@
+# Counts how long the furnace has run since the last tank check
+#
+# https://www.home-assistant.io/integrations/history_stats/
+
 platform: history_stats
 name: Furnace usage since last check
 entity_id: binary_sensor.furnace_is_heating
