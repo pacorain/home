@@ -55,8 +55,8 @@
               tag: "gas-tank-check-recommended"
               group: "gas-tank"
               subtitle: Tap and hold to enter a value
-              actions:
               url: /lovelace/utilities
+              actions:
               - title: Enter a level
                 action: gas_level_entered
                 behavior: textInput
