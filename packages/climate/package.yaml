@@ -3,7 +3,3 @@
 automation: !include_dir_list automations
 climate: !include_dir_list entities
 input_boolean: !include helpers/boolean.yaml
-
-# Gas tracking
-input_number gas_tracking: !include gas_tracking/input_number.yaml
-automation gas_tracking_notifications: !include gas_tracking/notifications.yaml

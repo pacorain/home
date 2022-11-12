@@ -1,0 +1,6 @@
+binary_sensor:
+- name: Furnace is heating
+  value_template: |
+    {{ state_attr('climate.heat', 'hvac_action') == 'heating' }}
+  unique_id: climate.heat.is_heating
+  icon: mdi:gas-burner
