@@ -1,0 +1,206 @@
+# The only automations that are needed are to handle notifying when the gas tank is low.
+#
+# The notifications used are persistent notifications and iOS notifications:
+#
+# - https://www.home-assistant.io/integrations/persistent_notification/
+# - https://companion.home-assistant.io/docs/notifications/actionable-notifications/
+
+
+- id: on_tank_check_recommended
+  alias: "Gas tank: On check recommended"
+  description: Notifies household members when a gas tank check is needed
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.tank_check_recommended
+      to: "on"
+    - platform: time_pattern
+      minutes: "0"
+      hours: "*"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.tank_check_recommended
+      state: "on"
+    - "{{ states('input_number.last_measured_gas_tank_level') | float(0) > 0 }}"
+  action:
+    # Put a persistent notification on Home Assistant
+    - service: persistent_notification.create
+      data: 
+        title: Please check the propane tank
+        message: >-
+          The propane tank has not been checked in 
+          {{ states.input_number.last_measured_gas_tank_level.last_updated | relative_time }}, and 
+          the furnace has run for {{ states.sensor.furnace_usage_since_last_check | round }} hours
+          since then.
+
+
+
+          Please check the tank level, and update the sensor 
+          `input_number.last_measured_gas_tank_level`.
+
+
+
+          [Utilities dashboard](/lovelace/utilities)
+        notification_id: "gas-tank-check-recommended"
+  
+    # Only notify every 4 hours
+    - if:
+        - or: 
+          - "{{ trigger.platform == 'state' }}"
+          - "{{ trigger.now.hour % 4 == 0 }}"
+      then:
+        - alias: "Notify Austin"
+          service: notify.mobile_app_austins_iphone
+          data:
+            title: Gas tank check needed
+            message: >-
+              Please enter the gas tank level.
+
+              The propane tank has not been checked in 
+              {{ states.input_number.last_measured_gas_tank_level.last_updated | relative_time }}, and 
+              the furnace has run for {{ states('sensor.furnace_usage_since_last_check') | round }} 
+              hours since then.
+            data:
+              tag: "gas-tank-check-recommended"
+              group: "gas-tank"
+              subtitle: Tap and hold to enter a value
+              url: /lovelace/utilities
+              actions:
+              - title: Enter a level
+                action: gas_level_entered
+                behavior: textInput
+                textInputButtonTitle: Gas level
+                textInputPlaceholder: >-
+                  {#- Rounds to nearest 0.5 -#}
+                  {{- (states('sensor.estimated_gas_tank_level') * 2) | int / 2 -}}
+                icon: sfsymbols:pencil
+
+- id: on_tank_check_not_recommended
+  alias: "Gas tank: Check recommendation cleared"
+  description: Clears notifications regarding a tank check
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.tank_check_recommended
+      to: "off"
+  action:
+    - service: persistent_notification.dismiss
+      data:
+        notification_id: "gas-tank-check-recommended"
+    - service: notify.mobile_app_austins_iphone
+      data:
+        message: "clear_notification"
+        data:
+          tag: "gas-tank-check-recommended"
+
+- id: on_tank_check_value_response
+  alias: "Gas tank: Handle notification response"
+  description: Handles when someone enters a value for the gas tank
+  trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data: 
+        action: gas_level_entered
+  action:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.last_measured_gas_tank_level
+      data:
+        value: |-
+          {{ trigger.event.data.reply_text | float }}
+
+- id: on_gas_tank_low
+  alias: "Gas tank: Low level alert"
+  description: Notifies when a refuel is needed
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.gas_tank_low
+      to: "on"
+      id: gas_tank_low
+    - platform: state
+      entity_id: sensor.estimated_gas_tank_level
+      id: gas_tank_decreased
+  condition:
+    - condition: state
+      entity_id: binary_sensor.gas_tank_low
+      state: "on"
+    - alias: "If fired because the gas tank decreased, make sure it decreased by at least 1% (sort of)"
+      condition: or
+      conditions:
+        - "{{ trigger.id != 'gas_tank_decreased' }}"
+        - "{{ trigger.from_state.state | int != trigger.to_state.state | int }}"
+    - "{{ states('input_number.last_measured_gas_tank_level') | float(0) > 0 }}"
+
+  action:
+    # Set variables from a private file
+    - variables: !include gas_company.yaml
+
+    # Put a persistent notification on Home Assistant
+    - service: persistent_notification.create
+      data: 
+        title: ⚠️ Gas tank low
+        message: >-
+          The estimated gas tank level is **{{ states('sensor.estimated_gas_tank_level') 
+          | round }}%**. 
+          
+          
+          
+          Please [call {{ gas_company_name }}](tel://{{ gas_company_phone }}) to request a refill,
+          or [request a refill from the website]({{ gas_company_login }}).
+
+
+
+          [Utilities dashboard](/lovelace/utilities)
+        notification_id: "gas-tank-low"
+    
+    - alias: "Notify household"
+      service: notify.household_ios
+      data:
+        title: >
+          Gas tank low
+        message: >
+          Estimated level: {{ states('sensor.estimated_gas_tank_level') | round }}%. Please
+          request a refill from {{ gas_company_name }}. Tap and hold for more.
+        data:
+          tag: "gas-tank-low"
+          group: "gas-tank"
+          url: /lovelace_utilities
+          actions:
+          - title: >
+              Call {{ gas_company_name }}
+            action: URI
+            uri: >
+              tel://{{ gas_company_phone }}
+            icon: sfsymbols:phone
+          - title:
+              Open webiste
+            action: URI
+            uri: >
+              {{ gas_company_login }}
+            icon: sfsymbols:globe
+          - title: Enter a new level
+            action: gas_level_entered
+            behavior: textInput
+            textInputButtonTitle: Gas level
+            textInputPlaceholder: >
+              {#- Rounds to nearest 0.5 -#}
+              {{- (states('sensor.estimated_gas_tank_level') * 2) | int / 2 -}}
+            icon: sfsymbols:pencil
+          push:
+            interruption-level: >
+              {{ states('sensor.estimated_gas_tank_level') | iif('time-sensitive', 'active') }}
+
+- id: on_gas_tank_not_low
+  alias: "Gas tank: Low level cleared"
+  description: Clears notifications regarding a refuel
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.gas_tank_low
+      to: "off"
+  action:
+    - service: persistent_notification.dismiss
+      data:
+        notification_id: "gas-tank-low"
+    - service: notify.household_ios
+      data:
+        message: "clear_notification"
+        data:
+          tag: "gas-tank-low"

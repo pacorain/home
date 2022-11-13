@@ -2,6 +2,7 @@
 
 climate: !include climate/package.yaml
 core: !include core/package.yaml
+gas_tracking: !include gas_tracking/package.yaml
 influxdb: !include influxdb/package.yaml
 kitchen: !include kitchen/package.yaml
 lighting: !include lighting/package.yaml

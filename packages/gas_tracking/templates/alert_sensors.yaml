@@ -1,0 +1,33 @@
+# Helper sensors - lets us know when something needs attention
+unique_id: climate.gas_tracking.problems
+binary_sensor:
+  - name: Tank check recommended
+    device_class: problem
+    # Assumes gas is depleted 3x as fast as the set usage factor, and assumes there is a problem
+    # when that value is 5% or less.
+    #
+    # Encourages checking more frequently as the tank gets lower.
+    state: >-
+      {{ 
+        states('input_number.last_measured_gas_tank_level') | float(None) - 3 * (
+          100
+            * states('input_number.tank_usage_factor') | float(None)
+            * states('sensor.furnace_usage_since_last_check') | float(None)
+        ) <= 5
+      }} 
+    availability: >-
+      {{
+        states('input_number.last_measured_gas_tank_level') | is_number
+          and states('input_number.tank_usage_factor') | is_number
+          and states('sensor.furnace_usage_since_last_check') | is_number
+      }}
+    unique_id: tank_check_recommended
+  - name: Gas tank low
+    device_class: problem
+    state: >-
+      {{
+        states('sensor.estimated_gas_tank_level') | float(None) < 30
+      }}
+    availability: >-
+      {{ states('sensor.estimated_gas_tank_level') | is_number }}
+    unique_id: gas_tank_low

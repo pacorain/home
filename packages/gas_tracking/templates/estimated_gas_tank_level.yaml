@@ -1,0 +1,19 @@
+# Gets the estimated gas tank from furnace runtime since last measurement
+sensor:
+  - name: Estimated gas tank level
+    unit_of_measurement: "%"
+    state: |
+      {{  
+        states('input_number.last_measured_gas_tank_level') | float - (
+          100
+            * states('input_number.tank_usage_factor') | float
+            * states('sensor.furnace_usage_since_last_check') | float
+        )
+      }}
+    unique_id: climate.gas_tracking.estimated_gas_tank_level
+    availability: >-
+      {{
+        states('input_number.last_measured_gas_tank_level') | is_number
+          and states('input_number.tank_usage_factor') | is_number
+          and states('sensor.furnace_usage_since_last_check') | is_number
+      }}

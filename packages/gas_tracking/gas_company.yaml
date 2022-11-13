@@ -1,0 +1,7 @@
+# This file is ignored on git so that I can make changes without pushing them to git.
+#
+# This helps ensure that e.g. my gas company can't be used for social engineering attacks, etc.
+
+gas_company_name: Acme Gas Co
+gas_company_phone: "18008008000"
+gas_company_login: https://google.com/search?q=gas+company+login
