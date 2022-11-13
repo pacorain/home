@@ -6,6 +6,25 @@
 # - https://companion.home-assistant.io/docs/notifications/actionable-notifications/
 
 
+- id: on_tank_checked
+  alias: "Gas tank: On new value"
+  description: Remember when the gas tank was last checked
+  trigger: 
+    - platform: event
+      event_type: call_service
+      event_data:
+        domain: input_number
+        service: set_value
+        service_data:
+          entity_id: input_number.tank_usage_factor
+
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.gas_tank_last_checked
+      datetime: |
+        {{ now() }}
+
 - id: on_tank_check_recommended
   alias: "Gas tank: On check recommended"
   description: Notifies household members when a gas tank check is needed

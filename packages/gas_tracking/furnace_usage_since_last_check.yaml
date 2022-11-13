@@ -8,6 +8,6 @@ entity_id: binary_sensor.furnace_is_heating
 state: "on"
 type: time
 start: |
-  {{ states.input_number.last_measured_gas_tank_level.last_updated }}
+  {{ states('input_datetime.gas_tank_last_checked') }}
 end: |
   {{ now() }}
