@@ -2,11 +2,11 @@
     "config": {
       "step": {
         "user": {
-          "title": "Starlink Address",
-          "description": "Starlink expects you connect at 192.168.100.1:9200. However, you can change this option if you have a proxy set up.",
+          "title": "Starlink Setup",
           "data": {
             "address": "[%key:common::config_flow::data::host%]",
-            "update_interval": "Update interval (seconds)"
+            "scan_interval": "Scan interval (seconds)",
+            "name": "[%key:common::config_flow::data::name%]"
           }
         }
       },

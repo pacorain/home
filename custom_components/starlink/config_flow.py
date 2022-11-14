@@ -4,23 +4,33 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from spacex.starlink import CommunicationError
+from spacex.starlink.dish import StarlinkDish
 import voluptuous as vol
 
 from homeassistant import config_entries
+from homeassistant.const import CONF_ADDRESS, CONF_NAME, CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
+import homeassistant.helpers.config_validation as cv
 
-from spacex.starlink.dish import StarlinkDish
-
-from .const import DOMAIN
+from .const import (
+    CONF_DEFAULT_ADDRESS,
+    CONF_DEFAULT_NAME,
+    CONF_DEFAULT_SCAN_INTERVAL,
+    DOMAIN,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
-        vol.Required("address", default="192.168.100.1:9200"): str,
-        vol.Optional("update_interval", default=5): float
+        vol.Required(CONF_NAME, default=CONF_DEFAULT_NAME): cv.string,
+        vol.Required(CONF_ADDRESS, default=CONF_DEFAULT_ADDRESS): cv.string,
+        vol.Required(
+            CONF_SCAN_INTERVAL, default=CONF_DEFAULT_SCAN_INTERVAL
+        ): cv.positive_float,
     }
 )
 
@@ -30,19 +40,12 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
 
     Data has the keys from STEP_USER_DATA_SCHEMA with values provided by the user.
     """
-    # TODO validate the data can be used to set up a connection.
 
-    # If your PyPI package is not built with async, pass your methods
-    # to the executor:
-    # await hass.async_add_executor_job(
-    #     your_validate_func, data["username"], data["password"]
-    # )
-
-    dish = StarlinkDish(address=data["address"])
+    dish = StarlinkDish(address=data[CONF_ADDRESS])
     try:
         # TODO: Can I make this async?
         dish.connect()
-    except:
+    except CommunicationError:
         raise CannotConnect()
 
     # Return info that you want to store in the config entry.

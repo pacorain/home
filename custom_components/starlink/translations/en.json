@@ -1,5 +1,5 @@
 {
-    "config_flow": {
+    "config": {
         "abort": {
             "already_configured": "Device is already configured"
         },
@@ -11,10 +11,11 @@
         "step": {
             "user": {
                 "data": {
-                    "host": "Host",
-                    "password": "Password",
-                    "username": "Username"
-                }
+                    "address": "Address",
+                    "scan_interval": "Scan interval (seconds)",
+                    "name": "Name"
+                },
+                "title": "Starlink Setup"
             }
         }
     }
