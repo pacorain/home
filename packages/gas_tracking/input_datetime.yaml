@@ -1,0 +1,4 @@
+gas_tank_last_checked:
+  name: Gas tank last checked
+  has_date: true
+  has_time: true
