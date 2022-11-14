@@ -1,3 +1,6 @@
 name: Daily Starlink Usage
 source: sensor.starlink_total_usage
 cycle: daily
+tarrifs:
+  - peak
+  - offpeak

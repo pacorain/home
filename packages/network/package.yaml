@@ -18,3 +18,5 @@ template:
 
 # Utility meters
 utility_meter: !include_dir_named utility_meter
+
+automation: !include_dir_list automations

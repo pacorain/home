@@ -1,0 +1,23 @@
+id: starlink_tariff_schedule
+alias: Starlink Tariff Schedule
+description: Updates Starlink meters on which tariff is currently scheduled
+trigger:
+  - platform: time
+    at: "07:00:00"
+    variables:
+      tariff: "peak"
+  - platform: time
+    at: "23:00:00"
+    variables:
+      tariff: "offpeak"
+action:
+  - service: select.select_option
+    target:
+      entity_id: select.daily_starlink_usage
+    data:
+      option: "{{ tariff }}"
+  - service: select.select_option
+    target:
+      entity_id: select.monthly_starlink_usage
+    data:
+      option: "{{ tariff }}"
