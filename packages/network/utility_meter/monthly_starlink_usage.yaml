@@ -1,6 +1,6 @@
 name: Monthly Starlink Usage
 source: sensor.starlink_total_usage
 cycle: monthly
-tarrifs:
+tariffs:
   - peak
   - offpeak

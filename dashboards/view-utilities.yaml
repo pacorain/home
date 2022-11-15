@@ -24,10 +24,9 @@ cards:
         **Last updated**
 
         ## {{ 
-          states.input_number
-          .last_measured_gas_tank_level
-          .last_updated
-          .strftime("%a, %b %-d") 
+          (states(
+            'input_datetime.gas_tank_last_checked'
+          ) | as_datetime).strftime("%a, %b %-d") 
         }}
 
         {%- set runtime = states('sensor.furnace_usage_since_last_check') 

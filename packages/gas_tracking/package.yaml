@@ -1,4 +1,5 @@
 input_number: !include input_number.yaml
+input_datetime: !include input_datetime.yaml
 automation: !include notifications.yaml
 template: !include_dir_list templates/
 sensor:
