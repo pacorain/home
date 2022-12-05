@@ -16,6 +16,7 @@ output:
     red: output_blackhole
     green: output_blackhole
     blue: output_blackhole
+    gamma_correct: 1
     entity_category: config
     icon: "mdi:palette"
 
