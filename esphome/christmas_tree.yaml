@@ -3,12 +3,15 @@ substitutions:
 
 <<: !include hardware/nodemcu.yaml
 
+# An output that does nothing
+# Used for effect lights that store a color, but don't actually go anywhere
 output:
   - platform: template
     id: output_blackhole
     type: float
     write_action: []
 
+# Re-usable configs
 .defs:
   # A light with no output - used to define colors for effects
   effect_light: &effect_light
@@ -21,12 +24,12 @@ output:
     icon: "mdi:palette"
 
 light:
-  - platform: neopixelbus
+  - name: "Christmas Tree LEDs"
+    platform: neopixelbus
     type: RGB
     pin: GPIO3
     variant: WS2811
     num_leds: 150
-    name: "Christmas Tree LEDs"
     gamma_correct: 1
     effects:
       addressable_lambda:
@@ -49,22 +52,23 @@ light:
               it[i] = Color(r * 255, g * 255, b * 255);
           }
 
-  - <<: *effect_light
-    name: "Christmas Tree Effect Color 1"
+  # Fake lights - used in effects
+  - name: "Christmas Tree Effect Color 1"
     id: effect_color_1
-  - <<: *effect_light
-    name: "Christmas Tree Effect Color 2"
+    <<: *effect_light
+  - name: "Christmas Tree Effect Color 2"
     id: effect_color_2
-  - <<: *effect_light
-    name: "Christmas Tree Effect Color 3"
+    <<: *effect_light
+  - name: "Christmas Tree Effect Color 3"
     id: effect_color_3
-  - <<: *effect_light
-    name: "Christmas Tree Effect Color 4"
+    <<: *effect_light
+  - name: "Christmas Tree Effect Color 4"
     id: effect_color_4
+    <<: *effect_light
 
 button:
-  - platform: template
-    name: "Reset Christmas Tree Effect Colors"
+  - name: "Reset Christmas Tree Effect Colors"
+    platform: template
     on_press:
       - light.turn_on:
           id: effect_color_1
