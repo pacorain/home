@@ -30,7 +30,7 @@ light:
     effects:
       addressable_lambda:
         name: "Solid 4-Color"
-        update_interval: 60000ms
+        update_interval: 0ms
         lambda: |-
           esphome::light::LightState* c;
           float r, g, b;
