@@ -36,6 +36,7 @@ light:
     variant: WS2811
     num_leds: 150
     gamma_correct: 1
+    icon: "mdi:string-lights"
     effects:
       - addressable_lambda:
           name: "Solid 4-Color"
