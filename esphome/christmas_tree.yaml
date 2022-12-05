@@ -3,12 +3,6 @@ substitutions:
 
 <<: !include hardware/nodemcu.yaml
 
-output:
-  - platform: template
-    id: output_blackhole
-    type: float
-    write_action: []
-
 .defs:
   # A light with no output - used to define colors for effects
   effect_light: &effect_light
