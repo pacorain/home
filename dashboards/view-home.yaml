@@ -69,6 +69,35 @@ cards:
         show_state: false
   - type: area
     area: living_room
+  - type: picture-elements
+    elements:
+                  - type: state-icon
+                    entity: light.right_cloud
+                    style:
+                      top: 32%
+                      left: 41%
+                    double_tap_action:
+                      action: toggle
+                  - type: state-icon
+                    entity: light.left_cloud
+                    style:
+                      top: 29%
+                      left: 20%
+                      scale: 175%
+                    double_tap_action:
+                      action: toggle
+                  - type: state-icon
+                    entity: light.cloud_lamps
+                    style:
+                      top: 30%
+                      left: 32%
+                      background-color: '#444'
+                      border: white solid 1px
+                      border-radius: 20px
+                    double_tap_action:
+                      action: toggle
+    image: >-
+                  /local/images/private/ff934309e51c25b4132a0c7efacd912ef8259a7375ef1629c70312b4c7747dda.jpeg
   - type: vertical-stack
     cards:
       - type: conditional
