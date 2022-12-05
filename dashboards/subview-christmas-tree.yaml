@@ -94,7 +94,7 @@ cards:
         action: call-service
         service: light.turn_on
         data:
-          effect: null
+          effect: "None"
         target:
           entity_id: light.christmas_tree_leds
       hold_action:
