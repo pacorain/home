@@ -45,7 +45,7 @@ light:
                 c = id(effect_color_4);
               }
               c->current_values_as_rgb(&r, &g, &b);
-              it[i] = Color(r, g, b);
+              it[i] = Color(r * 255, g * 255, b * 255);
           }
 
   - <<: *effect_light
