@@ -54,3 +54,32 @@ light:
   - <<: *effect_light
     name: "Christmas Tree Effect Color 4"
     id: effect_color_4
+
+button:
+  - platform: template
+    name: "Reset Christmas Tree Effect Colors"
+    on_press:
+      - light.turn_on:
+          id: effect_color_1
+          red: 100%
+          green: 0%
+          blue: 0%
+          brightness: 100%
+      - light.turn_on:
+          id: effect_color_2
+          red: 0%
+          green: 0%
+          blue: 0%
+          brightness: 100%
+      - light.turn_on:
+          id: effect_color_3
+          red: 0%
+          green: 0%
+          blue: 100%
+          brightness: 100%
+      - light.turn_on:
+          id: effect_color_4
+          red: 100%
+          green: 25%
+          blue: 0%
+          brightness: 100%
