@@ -1,0 +1,110 @@
+<<: !include hardware/nodemcu.yaml
+
+esphome:
+  name: christmas-tree
+  includes: christmas_tree.h
+  on_boot:
+    priority: 600
+    then: 
+      - button.press: reset_lights
+
+# An output that does nothing
+# Used for effect lights that store a color, but don't actually go anywhere
+output:
+  - platform: template
+    id: output_blackhole
+    type: float
+    write_action: []
+
+# Re-usable configs
+.defs:
+  # A light with no output - used to define colors for effects
+  effect_light: &effect_light
+    platform: rgb
+    red: output_blackhole
+    green: output_blackhole
+    blue: output_blackhole
+    gamma_correct: 1
+    entity_category: config
+    icon: "mdi:palette"
+
+light:
+  - name: "Christmas Tree LEDs"
+    platform: neopixelbus
+    type: RGB
+    pin: GPIO3
+    variant: WS2811
+    num_leds: 150
+    gamma_correct: 1
+    icon: "mdi:string-lights"
+    effects:
+      - addressable_lambda:
+          name: "Solid 4-Color"
+          update_interval: 0ms
+          lambda: |-
+            for (int i = it.size() - 1; i > 0; i--) {
+                it[i] = effect_color(i % 4);
+            }
+      - addressable_lambda:
+          name: "Wipe 4-Color"
+          update_interval: 0ms
+          lambda: |-
+            const uint16_t transition_time = 500;
+
+            static uint16_t offset = 0;
+            static uint32_t next_offset = millis() + transition_time;
+
+            if (millis() > next_offset) {
+              offset = (offset + 1) % 4;
+              next_offset = millis() + transition_time;
+            }
+
+            for (int i = it.size() - 1; i > 0; i--) {
+                it[i] = effect_color((i + offset) % 4);
+            }
+
+
+
+  # Fake lights - used in effects
+  - name: "Christmas Tree Effect Color 1"
+    id: effect_color_1
+    <<: *effect_light
+  - name: "Christmas Tree Effect Color 2"
+    id: effect_color_2
+    <<: *effect_light
+  - name: "Christmas Tree Effect Color 3"
+    id: effect_color_3
+    <<: *effect_light
+  - name: "Christmas Tree Effect Color 4"
+    id: effect_color_4
+    <<: *effect_light
+
+button:
+  - name: "Reset Christmas Tree Effect Colors"
+    platform: template
+    id: reset_lights
+    on_press:
+      - light.turn_on:
+          id: effect_color_1
+          red: 100%
+          green: 0%
+          blue: 0%
+          brightness: 100%
+      - light.turn_on:
+          id: effect_color_2
+          red: 0%
+          green: 100%
+          blue: 0%
+          brightness: 100%
+      - light.turn_on:
+          id: effect_color_3
+          red: 0%
+          green: 0%
+          blue: 100%
+          brightness: 100%
+      - light.turn_on:
+          id: effect_color_4
+          red: 100%
+          green: 50%
+          blue: 0%
+          brightness: 100%

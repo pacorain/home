@@ -1,0 +1,10 @@
+esp8266:
+  board: nodemcuv2
+
+wifi:
+  <<: !include ../config/wifi_default.yaml
+  <<: !include ../config/fallback_ap.yaml
+
+logger:
+api:
+ota:

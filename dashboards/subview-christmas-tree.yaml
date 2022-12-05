@@ -1,0 +1,131 @@
+- theme: Backend-selected
+  title: Christmas Tree
+  path: christmas-tree
+  subview: true
+  badges: []
+  cards:
+    - type: vertical-stack
+      cards:
+        - name: Christmas Tree
+          type: button
+          entity: light.christmas_tree_leds
+          icon: mdi:forest
+          show_name: true
+          show_icon: true
+          show_state: true
+          tap_action:
+            action: more-info
+          hold_action:
+            action: toggle
+        - title: Effect colors
+          type: grid
+          square: true
+          columns: 4
+          
+          cards:
+            - name: Color 1
+              type: button
+              entity: light.christmas_tree_effect_color_1
+              icon: mdi:numeric-1-circle
+              show_name: false
+              show_icon: true
+              show_state: false
+              tap_action:
+                action: more-info
+              hold_action:
+                action: call-service
+                service: button.press
+                target:
+                  entity_id: button.reset_christmas_tree_effect_colors
+            - name: Color 2
+              type: button
+              entity: light.christmas_tree_effect_color_2
+              icon: mdi:numeric-2-circle
+              show_name: false
+              show_icon: true
+              show_state: false
+              tap_action:
+                action: more-info
+              hold_action:
+                action: call-service
+                service: button.press
+                target:
+                  entity_id: button.reset_christmas_tree_effect_colors
+            - name: Color 3
+              type: button
+              entity: light.christmas_tree_effect_color_3
+              icon: mdi:numeric-3-circle
+              show_name: false
+              show_icon: true
+              show_state: false
+              tap_action:
+                action: more-info
+              hold_action:
+                action: call-service
+                service: button.press
+                target:
+                  entity_id: button.reset_christmas_tree_effect_colors
+            - name: Color 4
+              type: button
+              entity: light.christmas_tree_effect_color_4
+              icon: mdi:numeric-4-circle
+              show_name: false
+              show_icon: true
+              show_state: false
+              tap_action:
+                action: more-info
+              hold_action:
+                action: call-service
+                service: button.press
+                target:
+                  entity_id: button.reset_christmas_tree_effect_colors
+    - title: Effects
+      type: grid
+      columns: 4
+      square: true
+      cards:
+        - name: No effect
+          type: button
+          icon: mdi:cancel
+          icon_height: 32px
+          show_name: true
+          show_icon: true
+          tap_action:
+            action: call-service
+            service: light.turn_on
+            data:
+              effect: null
+            target:
+              entity_id: light.christmas_tree_leds
+          hold_action:
+            action: none
+        - name: Solid 4-color
+          type: button
+          icon: mdi:pause
+          icon_height: 32px
+          show_name: true
+          show_icon: true
+          tap_action:
+            action: call-service
+            service: light.turn_on
+            data:
+              effect: Solid 4-Color
+            target:
+              entity_id: light.christmas_tree_leds
+          hold_action:
+            action: none
+        - name: Wipe 4-color
+          type: button
+          icon: mdi:gesture-swipe-up
+          icon_height: 32px
+          show_name: true
+          show_icon: true
+          tap_action:
+            action: call-service
+            service: light.turn_on
+            data:
+              effect: Wipe 4-Color
+            target:
+              entity_id: light.christmas_tree_leds
+          hold_action:
+            action: none

@@ -67,6 +67,14 @@ cards:
           action: more-info
         entity: climate.heat
         show_state: false
+      - type: button
+        entity: light.christmas_tree_leds
+        show_name: true
+        show_icon: true
+        show_state: false
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace/christmas-tree
   - type: area
     area: living_room
   - type: picture-elements

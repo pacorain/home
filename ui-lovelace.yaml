@@ -2,3 +2,4 @@ views:
   - !include dashboards/view-home.yaml
   - !include dashboards/view-utilities.yaml
   - !include dashboards/view-all.yaml
+  - !include dashboards/subview-christmas-tree.yaml
