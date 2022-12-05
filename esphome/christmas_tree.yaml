@@ -1,7 +1,12 @@
-substitutions:
-  node_name: christmas-tree
-
 <<: !include hardware/nodemcu.yaml
+
+esphome:
+  name: christmas-tree
+  includes: christmas_tree.h
+  on_boot:
+    priority: 600
+    then: 
+      - button.press: reset_lights
 
 # An output that does nothing
 # Used for effect lights that store a color, but don't actually go anywhere
@@ -32,25 +37,19 @@ light:
     num_leds: 150
     gamma_correct: 1
     effects:
-      addressable_lambda:
-        name: "Solid 4-Color"
-        update_interval: 0ms
-        lambda: |-
-          esphome::light::LightState* c;
-          float r, g, b;
-          for (int i = it.size() - 1; i > 0; i--) {
-              if (i % 4 == 0) {
-                c = id(effect_color_1);
-              } else if (i % 4 == 1) {
-                c = id(effect_color_2);
-              } else if (i % 4 == 2) {
-                c = id(effect_color_3);
-              } else {
-                c = id(effect_color_4);
-              }
-              c->current_values_as_rgb(&r, &g, &b);
-              it[i] = Color(r * 255, g * 255, b * 255);
-          }
+      - addressable_lambda:
+          name: "Solid 4-Color"
+          update_interval: 0ms
+          lambda: |-
+            for (int i = it.size() - 1; i > 0; i--) {
+                it[i] = effect_color(i % 4);
+            }
+      - addressable_lambda:
+          name: "Wipe 4-Color"
+          update_interval: 0ms
+          lambda: |-
+            return;
+
 
   # Fake lights - used in effects
   - name: "Christmas Tree Effect Color 1"
@@ -69,6 +68,7 @@ light:
 button:
   - name: "Reset Christmas Tree Effect Colors"
     platform: template
+    id: reset_lights
     on_press:
       - light.turn_on:
           id: effect_color_1
@@ -79,7 +79,7 @@ button:
       - light.turn_on:
           id: effect_color_2
           red: 0%
-          green: 0%
+          green: 100%
           blue: 0%
           brightness: 100%
       - light.turn_on:
@@ -91,6 +91,6 @@ button:
       - light.turn_on:
           id: effect_color_4
           red: 100%
-          green: 25%
+          green: 50%
           blue: 0%
           brightness: 100%
