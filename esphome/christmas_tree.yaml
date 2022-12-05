@@ -48,7 +48,20 @@ light:
           name: "Wipe 4-Color"
           update_interval: 0ms
           lambda: |-
-            return;
+            const uint16_t transition_time = 500;
+
+            static uint16_t offset = 0;
+            static uint32_t next_offset = millis() + transition_time;
+
+            if (millis() > next_offset) {
+              offset = (offset + 1) % 4;
+              next_offset = millis() + transition_time;
+            }
+
+            for (int i = it.size() - 1; i > 0; i--) {
+                it[i] = effect_color((i + offset) % 4);
+            }
+
 
 
   # Fake lights - used in effects
