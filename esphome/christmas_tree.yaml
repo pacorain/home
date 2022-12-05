@@ -13,9 +13,9 @@ output:
   # A light with no output - used to define colors for effects
   effect_light: &effect_light
     platform: rgb
-    red: null
-    green: null
-    blue: null
+    red: output_blackhole
+    green: output_blackhole
+    blue: output_blackhole
     entity_category: config
     icon: "mdi:palette"
 
