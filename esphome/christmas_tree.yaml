@@ -30,6 +30,7 @@ output:
 
 light:
   - name: "Christmas Tree LEDs"
+    id: main_light
     platform: neopixelbus
     type: RGB
     pin: GPIO3
@@ -124,4 +125,10 @@ button:
           red: 100%
           green: 50%
           blue: 0%
+          brightness: 100%
+      - light.turn_on:
+          id: main_light
+          red: 100%
+          green: 62%
+          blue: 19%
           brightness: 100%
