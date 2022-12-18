@@ -54,6 +54,16 @@ light:
           update_interval: 0ms
           lambda: |-
             do_solid_fade_effect(it);
+      - addressable_rainbow:
+          name: Rainbow Tree 🌈
+          speed: 25
+          width: 100
+      - addressable_twinkle:
+          name: Twinkly Lights
+          twinkle_probability: 20%
+      - addressable_random_twinkle:
+          name: Colorful Twinkly Lights
+          twinkle_probability: 20%
             
 
 
