@@ -64,7 +64,21 @@ light:
       - addressable_random_twinkle:
           name: Colorful Twinkly Lights
           twinkle_probability: 20%
-            
+      - addressable_lambda:
+          name: 4-Color Cycle
+          update_interval: 0ms
+          lambda: |-
+            do_cycle_effect(it);
+      - addressable_lambda:
+          name: 3-Color Cycle
+          update_interval: 0ms
+          lambda: |-
+            do_cycle_effect(it, 3);
+      - addressable_lambda:
+          name: 2-Color Cycle
+          update_interval: 0ms
+          lambda: |-
+            do_cycle_effect(it, 2);
 
 
   # Fake lights - used in effects
