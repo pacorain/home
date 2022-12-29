@@ -1,0 +1,3 @@
+[submodule "custom_components/habitica"]
+	path = custom_components/habitica
+	url = git@github.com:pacorain/homeassistant-habitica
