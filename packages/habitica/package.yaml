@@ -1,0 +1,5 @@
+habitica:
+  - name: Habitica Austin
+    user_id: 2f6e262c-d9e7-4571-993a-7d000324e2b9
+    api_token: !secret api_token_habitica_austin
+    
