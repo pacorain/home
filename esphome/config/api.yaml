@@ -1,0 +1,4 @@
+encryption: 
+  key: !secret api_encryption_key
+password: !secret api_password
+id: my_api
