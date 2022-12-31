@@ -1,0 +1,5 @@
+substitutions:
+  device_name: roses-fan
+  friendly_name: Rose's Fan
+
+<<: !include hardware/sonoff_basic_r2.yaml
