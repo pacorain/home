@@ -1,17 +1,13 @@
 # Wixann lights
-
-esphome:
-  name: ${node_name}
+#
+# I have these set up in cloud-shaped shades in my child's room.
 
 esp8266:
   board: esp01_1m
   
 
-wifi: 
-  <<: !include ../config/wifi_default.yaml
-  <<: !include ../config/fallback_ap.yaml
-
-time: !include ../config/time.yaml
+packages:
+  device_base: !include ../config/device_base.yaml
   
 
 output:
@@ -35,16 +31,6 @@ output:
     pin: GPIO13
     frequency: 288 Hz
     id: pwm5
-
-captive_portal:
-
-# Enable logging
-logger:
-
-# Enable Home Assistant API
-api:
-
-ota:
 
 light:
   - platform: rgbww

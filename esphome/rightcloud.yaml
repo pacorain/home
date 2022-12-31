@@ -1,5 +1,5 @@
 substitutions:
-  node_name: rightcloud
-  device_name: Right Cloud
+  device_name: rightcloud
+  friendly_name: Right Cloud
 
 <<: !include hardware/wixann.yaml
