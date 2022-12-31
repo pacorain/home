@@ -42,6 +42,7 @@ light:
     warm_white: pwm5
     cold_white_color_temperature: 6500 K
     warm_white_color_temperature: 2700 K
+    constant_brightness: true
     id: cloud
     icon: mdi:cloud
     constant_brightness: true
