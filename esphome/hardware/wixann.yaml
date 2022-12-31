@@ -4,7 +4,6 @@
 
 esp8266:
   board: esp01_1m
-  
 
 packages:
   device_base: !include ../config/device_base.yaml
@@ -13,24 +12,23 @@ packages:
   pwm: &pwm
     platform: esp8266_pwm
     frequency: 288 Hz
-  
 
 output:
   - <<: *pwm
     pin: GPIO04
-    id: pwm1
+    id: r
   - <<: *pwm
     pin: GPIO12
-    id: pwm2
+    id: g
   - <<: *pwm
     pin: GPIO14
-    id: pwm3
+    id: b
   - <<: *pwm
     pin: GPIO05
-    id: pwm4
+    id: cw
   - <<: *pwm
     pin: GPIO13
-    id: pwm5
+    id: ww
 
 switch:
   - platform: template
@@ -39,14 +37,14 @@ switch:
     turn_on_action:
       - light.turn_off: cloud
       - output.esp8266_pwm.set_frequency: 
-          id: pwm5
+          id: ww
           frequency: 60Hz
       - output.set_level:
-          id: pwm5
+          id: ww
           level: 0.001%
     turn_off_action:
       - output.esp8266_pwm.set_frequency: 
-          id: pwm5
+          id: ww
           frequency: 288Hz
       - if:
           condition: 
@@ -54,19 +52,17 @@ switch:
               light.is_on: cloud
           then:
             output.set_level:
-              id: pwm5
+              id: ww
               level: 0%
-        
-
 
 light:
   - platform: rgbww
     name: "${friendly_name}"
-    red: pwm1
-    green: pwm2
-    blue: pwm3
-    cold_white: pwm4
-    warm_white: pwm5
+    red: r
+    green: g
+    blue: b
+    cold_white: cw
+    warm_white: ww
     cold_white_color_temperature: 6500 K
     warm_white_color_temperature: 2700 K
     constant_brightness: true
