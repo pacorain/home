@@ -8,33 +8,33 @@ esp8266:
 
 packages:
   device_base: !include ../config/device_base.yaml
+
+.defs:
+  pwm: &pwm
+    platform: esp8266_pwm
+    frequency: 288 Hz
   
 
 output:
-  - platform: esp8266_pwm
+  - <<: *pwm
     pin: GPIO04
-    frequency: 288 Hz
     id: pwm1
-  - platform: esp8266_pwm
+  - <<: *pwm
     pin: GPIO12
-    frequency: 288 Hz
     id: pwm2
-  - platform: esp8266_pwm
+  - <<: *pwm
     pin: GPIO14
-    frequency: 288 Hz
     id: pwm3
-  - platform: esp8266_pwm
+  - <<: *pwm
     pin: GPIO05
-    frequency: 288 Hz
     id: pwm4
-  - platform: esp8266_pwm
+  - <<: *pwm
     pin: GPIO13
-    frequency: 288 Hz
     id: pwm5
 
 light:
   - platform: rgbww
-    name: "${device_name}"
+    name: "${friendly_name}"
     red: pwm1
     green: pwm2
     blue: pwm3
