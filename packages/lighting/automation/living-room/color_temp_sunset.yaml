@@ -1,3 +1,6 @@
+# When enabled, this automation changes the color temprature of hte living room lights with the
+# sun. 
+
 id: living_room_color_temp_sunset
 alias: Color the living room lights with the sun
 trigger:
@@ -14,19 +17,22 @@ condition:
 action:
   - variables:
       sun_state: >
-        {% set seconds_to_dusk = state_attr('sun.sun', 'next_dusk') | as_timestamp - now() | as_timestamp -%}
-        {% set seconds_since_change = now() | as_timestamp - states.sun.sun.last_changed | as_timestamp -%}
+        {% set seconds_to_dusk = (state_attr('sun.sun', 'next_dusk')) | as_timestamp - (now() | as_timestamp) -%}
+        {% set seconds_since_change = (now() | as_timestamp) - (states.sun.sun.last_changed | as_timestamp) -%}
 
         {% if states('sun.sun') == 'below_horizon' -%}
           0
 
         {%- elif seconds_to_dusk < 10800 -%}
+          {#  Fades over two hours, ending one hour before dusk  #}
           {{ [(seconds_to_dusk - 3600) / 7200, 0 ] | max }}
 
         {%- elif seconds_since_change < 3600 -%}
+          {# Sun isn't below horizon, but change < 1 hour ago #}
           0
 
         {%- elif seconds_since_change < 10800 -%}
+          {# Fades over two hours, starting 1 hour after dusk #}
           {{ (seconds_since_change - 3600) / 7200 }}
 
         {%- else -%}
