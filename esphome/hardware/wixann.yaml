@@ -32,6 +32,33 @@ output:
     pin: GPIO13
     id: pwm5
 
+switch:
+  - platform: template
+    name: "${friendly_name} Nightlight"
+    id: nightlight_mode
+    turn_on_action:
+      - light.turn_off: cloud
+      - output.esp8266_pwm.set_frequency: 
+          id: pwm5
+          frequency: 60Hz
+      - output.set_level:
+          id: pwm5
+          level: 0.001%
+    turn_off_action:
+      - output.esp8266_pwm.set_frequency: 
+          id: pwm5
+          frequency: 288Hz
+      - if:
+          condition: 
+            not:
+              light.is_on: cloud
+          then:
+            output.set_level:
+              id: pwm5
+              level: 0%
+        
+
+
 light:
   - platform: rgbww
     name: "${friendly_name}"
@@ -45,8 +72,9 @@ light:
     constant_brightness: true
     id: cloud
     icon: mdi:cloud
-    constant_brightness: true
     gamma_correct: 1.0
+    on_turn_on:
+      - switch.turn_off: nightlight_mode
     effects:
       - random:
           name: Colorful
