@@ -2,4 +2,52 @@ substitutions:
   device_name: roses-fan
   friendly_name: Rose's Fan
 
-<<: !include hardware/sonoff_basic_r2.yaml
+## Generic start for Sonoff basic R2 devices
+packages:
+  device_base: !include config/device_base.yaml
+
+esp8266:
+  board: esp8285
+
+
+binary_sensor:
+  - platform: gpio
+    id: push_button
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    internal: true
+    on_press:
+      - fan.toggle: fan_power
+
+output:
+  - platform: gpio
+    pin: GPIO12
+    id: relay
+
+fan:
+  - platform: binary
+    name: "$friendly_name"
+    output: relay
+    id: fan_power
+    restore_mode: ALWAYS_ON
+
+light:
+  - platform: status_led
+    pin:
+      number: GPIO13
+      inverted: True
+    id: blue_led
+    internal: True
+    restore_mode: ALWAYS_OFF
+    effects:
+      - lambda:
+          name: "Identify"
+          update_interval: 500ms
+          lambda: |-
+            static int state = 0;
+            auto call = id(blue_led).turn_on();
+            call.set_brightness(state == 0);
+            call.perform();
+            state = (state + 1) % 2;
