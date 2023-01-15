@@ -2,3 +2,4 @@
 ssid: !secret esphome_ssid
 password: !secret esphome_sk
 id: my_wifi
+fast_connect: true

@@ -12,6 +12,7 @@ captive_portal:
 time: !include time.yaml
 
 logger:
+  id: _logger
 api: !include api.yaml
 ota: !include ota.yaml
 
