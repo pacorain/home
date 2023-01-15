@@ -67,14 +67,6 @@ cards:
           action: more-info
         entity: climate.heat
         show_state: false
-      - type: button
-        entity: light.christmas_tree_leds
-        show_name: true
-        show_icon: true
-        show_state: false
-        tap_action:
-          action: navigate
-          navigation_path: /lovelace/christmas-tree
   - type: area
     area: living_room
   - type: picture-elements
@@ -104,6 +96,17 @@ cards:
                       border-radius: 20px
                     double_tap_action:
                       action: toggle
+                  - type: state-icon
+                    entity: switch.rose_s_fan_power
+                    icon: mdi:fan
+                    style:
+                      top: 90%
+                      left: 95%
+                      background-color: '#444'
+                      border: white solid 1px
+                      border-radius: 20px
+                    double_tap_action:
+                      action: toggle
     image: >-
                   /local/images/private/ff934309e51c25b4132a0c7efacd912ef8259a7375ef1629c70312b4c7747dda.jpeg
   - type: vertical-stack
@@ -122,17 +125,3 @@ cards:
         card:
           type: media-control
           entity: media_player.living_room
-  - type: horizontal-stack
-    cards:
-      - type: entity
-        entity: switch.dehydrator
-        state_color: true
-        name: Dehydrator
-      - type: conditional
-        conditions:
-          - entity: switch.dehydrator
-            state: 'on'
-        card:
-          type: entity
-          entity: input_datetime.dehydrator_stop_time
-          name: Will turn off at
