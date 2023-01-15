@@ -4,4 +4,4 @@ packages:
 substitutions:
   friendly_name: Office Radiator
   device_name: office-radiator
-  watt_limit: "1510"
+  watt_limit: "1550"
