@@ -1,3 +1,8 @@
 office_climate_schedule:
   name: Office climate schedule
   icon: mdi:clock
+
+vacation_mode:
+  name: Vacation mode
+  icon: mdi:palm-tree
+  initial: false

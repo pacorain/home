@@ -1,0 +1,68 @@
+description: |
+  Turn the heat down at night
+
+id: climate_sleep
+alias: Turn the heat down at night
+
+trigger:
+  - platorm: time
+    at: "06:00:00"
+    id: morning
+  - platform: time
+    at: "10:00:00"
+    id: evening
+
+condition:
+  - condition: state
+    entity_id: input_boolean.vacation_mode
+    state: "off"
+
+aciton:
+  - alias: "Control the heat"
+    if:
+      - alias: "If the heat is on"
+        condition: state
+        entity_id: climate.heat
+        state: heat
+    then: 
+      - alias: "Change the temperature"
+        service: climate.set_temperature
+        target:
+          entity_id: climate.heat
+        data_template: 
+          temperature: |-
+            {{ (trigger.id == "evening") | iif(65, 68) }}
+  - alias: "Control the office radiator"
+    if:
+      - alias: "Should set the radiator to sleep"
+        condition: template
+        value_template: |-
+          {{
+              trigger.id == 'evening' 
+                and state_attr('climate.office_thermostat', 'temperature') > 50
+          }}
+    then:
+      - alias: "Set the radiator to sleep"
+        service: climate.climate.set_preset_mode
+        target:
+          entity_id: climate.office_radiator
+        data:
+          preset_mode: sleep
+  - alias: "Control the office radiator"
+    if:
+      - alias: "Should set the radiator to home"
+        condition: template
+        value_template: |-
+          {{
+              trigger.id == 'morning' 
+                and state_attr('climate.office_thermostat', 'preset_mode') == 'sleep'
+          }}
+    then:
+      - alias: "Set the radiator to sleep"
+        service: climate.climate.set_preset_mode
+        target:
+          entity_id: climate.office_radiator
+        data:
+          preset_mode: home
+      
+  
