@@ -17,7 +17,7 @@ condition:
     entity_id: input_boolean.vacation_mode
     state: "off"
 
-aciton:
+action:
   - alias: "Control the heat"
     if:
       - alias: "If the heat is on"
