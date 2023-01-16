@@ -1,0 +1,78 @@
+description: |-
+  Turns the radiator off if there are no events in the next hour.
+
+id: heat_the_office_off
+alias: Stop heating the office
+
+trigger:
+  - platform: calendar
+    event: end
+    entity_id: calendar.home_assistant
+    offset: -01:15:00
+  - platform: calendar
+    event: end
+    entity_id: calendar.austin_wfh
+    offset: -01:15:00
+condition:
+  - alias: Event meets criteria
+    condition: or
+    conditions:
+      - alias: Command to heat the office
+        condition: template
+        value_template: |
+          {{ 'heat the office' in trigger.calendar_event.description | lower }}
+      - alias: WFH event
+        # TODO: I need to find a way to exclude these automatically
+        condition: template
+        value_template: |
+          {{ trigger.id == 'heat_workspace' }}
+  - alias: Heater is on
+    condition: state
+    entity_id: climate.office_thermostate
+    state: heat
+action:
+  - alias: "Set up variables for the actions"
+    variables:
+      action_start: "{{ 'START_' ~ context.id }}"
+      action_delete: "{{ 'SKIP_' ~ context.id }}"
+      notification_target: "{{ trigger.id == 'heat_workspace' | iif('notify.mobile_app_austins_iphone', 'notify.household_ios') }}"
+  - alias: "Send the notification"
+    service_template: "{{ notification_target }}"
+    data:
+      message: |-
+        I'll start heating the office soon. Tap and hold for more options.
+      data:
+        subtitle: |-
+          Upcoming event: {{ trigger.calendar_event.summary }}
+        group: calendar
+        actions:
+            - action: "{{ action_start }}"
+              title: "Start now"
+              authenticationRequired: true
+            - action: "{{ action_skip }}"
+              title: "Skip"
+              authenticationRequired: true
+  - alias: "Wait for a response"
+    wait_for_trigger:
+      - platform: event
+        event_type: mobile_app_notification_action
+        event_data:
+          # waiting for the specific action avoids accidentally continuing
+          # for another script/automation's notification action
+          action: "{{ action_start }}"
+      - platform: event
+        event_type: mobile_app_notification_action
+        event_data:
+          action: "{{ action_skip }}"
+    timeout:
+      minutes: 30
+  - alias: "Perform the action"
+    choose:
+      - conditions: "{{ wait.trigger is none or wait.trigger.event.data.action == action_start }}"
+        sequence:
+          - alias: Set the temperature
+            service: climate.set_preset_mode
+            target:
+              entity_id: climate.office_thermostat
+            data:
+              preset_mode: home
