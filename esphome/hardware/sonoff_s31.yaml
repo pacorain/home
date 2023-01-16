@@ -3,19 +3,14 @@
 esphome:
   name: $device_name
 
+packages:
+  device_base: !include ../config/device_base.yaml
+
 esp8266:
   board: esp01_1m
 
-wifi:
-  ssid: !secret esphome_ssid
-  password: !secret esphome_sk
-
 logger:
   baud_rate: 0 # (UART logging interferes with cse7766)
-
-api:
-
-ota:
 
 # Device Specific Config
 
@@ -51,9 +46,6 @@ binary_sensor:
 
 
 sensor:
-  - platform: wifi_signal
-    name: "$friendly_name Wifi Signal"
-    update_interval: 15s
   - platform: cse7766
     current:
       name: "$friendly_name Current"
@@ -72,21 +64,16 @@ sensor:
               id: breaker
               state: ON
     update_interval: 5s
-  - platform: integration
-    name: "$friendly_name Energy"
-    sensor: power
-    time_unit: h
+  - platform: total_daily_energy
+    name: "$friendly_name Total Daily Energy"
+    power_id: power
     unit_of_measurement: kWh
     filters:
       - multiply: 0.001
 
-time:
-  - platform: sntp
-    id: the_time
-
 switch:
   - platform: gpio
-    name: "$friendly_name Power"
+    name: "$friendly_name"
     pin: GPIO12
     id: relay
     restore_mode: ALWAYS_ON

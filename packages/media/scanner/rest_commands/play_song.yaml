@@ -1,8 +1,0 @@
-url: |
-  http://{{ states('input_text.itunes_host') }}:8182/play_song
-method: POST
-payload: |
-  {% set body = {'name': name } %}
-  {{ body|to_json(ensure_ascii=True) }}
-content_type: "application/json"
-verify_ssl: false

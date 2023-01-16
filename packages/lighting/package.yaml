@@ -1,3 +1,4 @@
 # Package for lighting automations
 
 automation: !include_dir_list automation
+input_boolean: !include_dir_named input_boolean

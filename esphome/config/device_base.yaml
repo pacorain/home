@@ -1,0 +1,19 @@
+esphome:
+  name: $device_name
+  comment: $friendly_name
+
+wifi:
+  <<: !include wifi_default.yaml
+  # Access Point is separate so it can be excluded
+  <<: !include fallback_ap.yaml
+
+captive_portal:
+
+time: !include time.yaml
+
+logger:
+  id: _logger
+api: !include api.yaml
+ota: !include ota.yaml
+
+<<: !include wifi_info.yaml

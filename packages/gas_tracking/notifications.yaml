@@ -22,8 +22,9 @@
     - service: input_datetime.set_datetime
       target:
         entity_id: input_datetime.gas_tank_last_checked
-      datetime: |
-        {{ now() }}
+      data:
+        datetime: |
+          {{ now() }}
 
 - id: on_tank_check_recommended
   alias: "Gas tank: On check recommended"

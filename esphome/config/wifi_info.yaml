@@ -1,0 +1,16 @@
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: ${friendly_name} IP address
+      entity_category: diagnostic
+    ssid:
+      name: ${friendly_name} Connected SSID
+      entity_category: diagnostic
+
+sensor:
+  - platform: wifi_signal
+    name: ${friendly_name} WiFi Signal
+    id: wifi_signal_db
+    update_interval: 60s
+    entity_category: "diagnostic"
+    
